@@ -7,7 +7,7 @@
 <body>
 
 <div id="container">
-	<form method="post">
+	<form method="post" action="http://qualitriform.localhost/index.php/formbuilder/field_types">
 		<h1>Step 1 - list all form fields</h1>
 		<label for="txtarea">fields</label>
 		<textarea id="txtarea" name="txtarea" cols="40" rows="5" ></textarea>
