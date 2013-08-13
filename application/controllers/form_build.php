@@ -15,12 +15,11 @@ class Form_build extends CI_Controller {
     public function field_properties()
     {
         $field_list = $this->input->post('field_list');
-        $field_list = explode('\n', $field_list);
-
+        $field_list = explode("\n", $field_list);
+        $data['field_list'] = $field_list; 
         $this->load->model('formatter');
         $this->formatter->define_fields($field_list);
-
-        $this->load->view('field_properties', $field_list);
+        $this->load->view('field_properties', $data);
     }
 
     public function entity_info()
