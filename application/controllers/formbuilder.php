@@ -8,8 +8,8 @@ class FormBuilder extends CI_Controller {
 	}
 	public function field_types()
 	{
-		$field_list = $this->input->post('field_list');
-        $field_list = explode('\n', $field_list);
+		/*$field_list = $this->input->post('field_list');
+        $field_list = explode('\n', $field_list);*/
 		$this->load->view('fieldproperties');
 	}
 }
