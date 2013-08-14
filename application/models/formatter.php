@@ -2,16 +2,16 @@
 
 class Formatter extends CI_Model
 {
-    public function define_fields($fields)
+    public function define_fields($field_list)
     {
-        foreach($fields as $key => $field)
+        $fields = array();
+        foreach($field_list as $field)
         {
             if($field != '')
             {
                 $label = trim($field);
                 $name = clean_string($field);
                 $fields[$name] = array('label' => $label, 'name' => $name);
-                unset($fields[$key]);
             }
         }
 

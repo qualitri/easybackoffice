@@ -11,7 +11,7 @@ class Form_build extends Base_Controller {
     {
         $this->load->model('formatter');
         $field_labels = $this->formatter->get_field_labels();
-        $this->data['field_list'] =  !empty($field_labels) ? implode("\n", $field_labels) : '';
+        $this->data['field_list'] = !empty($field_labels) ? implode("\n", $field_labels) : '';
         $this->load->view('add_fields', $this->data);
     }
 
@@ -30,16 +30,15 @@ class Form_build extends Base_Controller {
     public function field_properties()
     {
         $this->load->model('formatter');
-        $fields = $this->formatter->get_fields();
-        $this->data['fields'] =  !empty($fields) ? $fields : array();
+        $fields = $this->formatter->get_fields();//die(print_r($fields));
+        $this->data['fields'] = !empty($fields) ? $fields : array();
         $this->load->view('field_properties', $this->data);
     }
 
     public function save_properties()
     {
         $this->load->model('formatter');
-        $format = $this->formatter->get_format();
-        $fields = $format['fields'];
+        $fields = $this->formatter->get_fields();
 
         foreach($fields as $key => $field)
         {
