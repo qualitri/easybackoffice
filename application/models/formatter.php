@@ -7,7 +7,7 @@ class Formatter extends CI_Model
         $fields = array();
         foreach($field_list as $field)
         {
-            if($field != '')
+            if(trim($field) != '')
             {
                 $label = trim($field);
                 $name = clean_string($field);
