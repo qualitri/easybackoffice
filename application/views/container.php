@@ -6,10 +6,13 @@
 </head>
 <body>
 	<script type="text/javascript">
-		/*function change(){document.getElementById("browse").src = document.getElementById("addr").value;}
-    	function update(){document.getElementById("addr").value = document.getElementById("browse").src}*/
+		function newfields () {
+			document.getElementById('second-step').contentWindow.refresh_fields();
+
+			//document.getElementById('second-step').src='form_build/field_properties'
+		}
 	</script>
-<iframe id="first-step" src="form_build/add_fields" frameborder="0" style="width:900px; height:290px;"></iframe>
-<iframe id="second-step" src="form_build/field_properties" onload="document.getElementById('first-step').src='form_build/add_fields'" frameborder="0" style="width:900px; height:290px;"></iframe>
+	<iframe id="first-step" src="form_build/add_fields" onload="newfields()" frameborder="0" style="width:900px; height:290px;"></iframe>
+	<iframe id="second-step" src="form_build/field_properties" frameborder="0" style="width:900px; height:290px;"></iframe>
 </body>
 </html>

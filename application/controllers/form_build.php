@@ -10,7 +10,8 @@ class Form_build extends CI_Controller {
     public function add_fields()
     {
         $this->load->model('formatter');
-        $data['field_list'] = "uihiuiuyiuy"; // $this->formatter->getFields()
+        $field_labels = $this->formatter->get_field_labels();
+        $data['field_list'] =  implode("\n", $field_labels);
         $this->load->view('add_fields', $data);
     }
 
@@ -20,26 +21,47 @@ class Form_build extends CI_Controller {
         $field_list = explode("\n", $field_list);
         $data['field_list'] = $field_list; 
         $this->load->model('formatter');
+        $this->load->helper('url');
+
         $this->formatter->define_fields($field_list); 
-        return add_fields();
+        redirect('Form_build/add_fields');
     }
 
     public function field_properties()
     {
-
-        
-        $this->load->view('field_properties');
+         $this->load->model('formatter');
+        $field_labels = $this->formatter->get_field_labels();
+        $data['field_list'] =  $field_labels;
+        $this->load->view('field_properties', $data);
     }
 
     public function entity_info()
     {
+        $format = $this->formatter->get_format();
+        $fields = $format['fields'];
+
+        foreach($fields as $key => $field)
+        {
+            $fields[$key]['type'] = $this->input->post('type'.$key);
+            $fields[$key]['required'] = $this->input->post('required'.$key) ? 1 : 0;
+            $fields[$key]['options'] =
+                $this->input->post('options'.$key) ? explode('\n', $this->input->post('options'.$key)) : null;
+        }
+
+        $this->load->model('formatter');
+        $this->formatter->detail_fields($fields);
 
         $this->load->view('entity_info');
     }
 
     public function go_to_export()
     {
+        $entity_name = $this->input->post('entity_name');
 
+        $this->load->model('formatter');
+        $this->formatter->set_entity_info($entity_name);
+
+        redirect('export');
     }
 }
 

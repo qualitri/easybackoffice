@@ -5,9 +5,13 @@
 	<title>Bienvenido a Qualitri Form</title>
 </head>
 <body>
-
+<script type="text/javascript">
+function refresh_fields() {
+	document.forms['field-properties'].submit();
+}
+</script>
 <div id="container">
-	<form method="post">
+	<form id="field-properties" method="post">
 		<h1>Step 2 - list all form fields</h1>
 		<div class="fields_generated">
 			<?php foreach ($field_list as $field): ?>

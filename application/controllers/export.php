@@ -16,9 +16,9 @@ class Export extends CI_Controller {
         $this->load->view('export_types');
     }
 
-    public function download()
+    public function generate()
     {
-        $type = $this->input->post('export_type');
+        $type = CI;//$this->input->post('export_type');
 
         switch($type)
         {
@@ -27,7 +27,46 @@ class Export extends CI_Controller {
             case DRUPAL: $this->load->model('drupal_exporter', 'exporter'); break;
         }
 
-        $format = $this->session->userdata('format');
+        $this->load->model('formatter');
+        $format = $this->formatter->get_format();
+
+        $this->exporter->generate_files($format);
+
+        $this->load->view('export_types');
+
+    }
+
+    public function download()
+    {
+        $type = CI;//$this->input->post('export_type');
+
+        switch($type)
+        {
+            case CI: $this->load->model('ci_exporter', 'exporter'); break;
+            case PS: $this->load->model('ps_exporter', 'exporter'); break;
+            case DRUPAL: $this->load->model('drupal_exporter', 'exporter'); break;
+        }
+
+        $this->load->model('formatter');
+        $format = $this->formatter->get_format();
+
+        $this->exporter->generate_files($format);
+
+        //$this->exporter->set_compress_method('.zip');
+        $this->exporter->compress();
+
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename=".$this->exporter->get_compressed_file_name());
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header("Content-Description: File Transfer");
+        header("Content-Length: ".filesize($this->exporter->get_compressed_file_path()));
+        ob_clean();
+        flush();
+        readfile($this->exporter->get_compressed_file_path());
+        exit;
+
     }
 
 }
