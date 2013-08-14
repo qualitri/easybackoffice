@@ -99,4 +99,10 @@ class Formatter extends CI_Model
         return $field_labels;
     }
 
+    public function get_fields()
+    {
+        $format = $this->get_format();
+        $fields = $format['fields'];
+        return $fields;
+    }
 }

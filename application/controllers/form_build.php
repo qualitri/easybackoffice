@@ -11,7 +11,7 @@ class Form_build extends Base_Controller {
     {
         $this->load->model('formatter');
         $field_labels = $this->formatter->get_field_labels();
-        $this->data['field_list'] =  implode("\n", $field_labels);
+        $this->data['field_list'] =  !empty($field_labels) ? implode("\n", $field_labels) : '';
         $this->load->view('add_fields', $this->data);
     }
 
@@ -29,14 +29,15 @@ class Form_build extends Base_Controller {
 
     public function field_properties()
     {
-         $this->load->model('formatter');
-        $field_labels = $this->formatter->get_field_labels();
-        $this->data['field_list'] =  $field_labels;
+        $this->load->model('formatter');
+        $fields = $this->formatter->get_fields();
+        $this->data['fields'] =  !empty($fields) ? $fields : array();
         $this->load->view('field_properties', $this->data);
     }
 
-    public function entity_info()
+    public function save_properties()
     {
+        $this->load->model('formatter');
         $format = $this->formatter->get_format();
         $fields = $format['fields'];
 
@@ -48,13 +49,18 @@ class Form_build extends Base_Controller {
                 $this->input->post('options'.$key) ? explode('\n', $this->input->post('options'.$key)) : null;
         }
 
-        $this->load->model('formatter');
         $this->formatter->detail_fields($fields);
+        redirect(base_url('form_build/field_properties'));
+    }
+
+    public function entity_info()
+    {
+
 
         $this->load->view('entity_info', $this->data);
     }
 
-    public function go_to_export()
+    public function save_entity_info()
     {
         $entity_name = $this->input->post('entity_name');
 
