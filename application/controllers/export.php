@@ -8,12 +8,26 @@ class Export extends Base_Controller {
 
 	public function index()
 	{
-		$this->export_types();
+		if($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])
+        {
+            //YOU ARE IN LOCALHOST
+            $this->export_local();
+        }
+        else
+        {
+            //YOU ARE NOT
+            $this->export_download();
+        }
 	}
 
-    public function export_types()
+    public function export_local()
     {
-        $this->load->view('export_types', $this->data);
+        $this->load->view('export_local', $this->data);
+    }
+
+    public function export_download()
+    {
+        $this->load->view('export_download', $this->data);
     }
 
     public function generate()
