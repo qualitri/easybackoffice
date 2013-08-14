@@ -105,4 +105,11 @@ class Formatter extends CI_Model
         $fields = $format['fields'];
         return $fields;
     }
+
+    public function get_entity_info()
+    {
+        $format = $this->get_format();
+        $entity_info = $format['entity'];
+        return $entity_info;
+    }
 }

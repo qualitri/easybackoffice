@@ -64,6 +64,7 @@ class Export extends Base_Controller {
         $this->load->model('formatter');
         $format = $this->formatter->get_format();
 
+        $this->load->model('exporter');
         $this->exporter->generate_files($format);
 
         //$this->exporter->set_compress_method('.zip');
