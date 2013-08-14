@@ -6,16 +6,15 @@
 </head>
 <body>
 <script type="text/javascript">
-function refresh_fields() {
-	document.forms['field-properties'].submit();
-}
+	function refresh_fields() {
+		document.forms['field-properties'].submit();
+	}
 </script>
 <div id="container">
 	<form id="field-properties" method="post">
 		<h1>Step 2 - list all form fields</h1>
 		<div class="fields_generated">
 			<?php foreach ($field_list as $field): ?>
-				<?php if($field != ""): ?>
 					<div class="field field-<?php echo $field; ?>">
 						<label for="input1Type"> <?php echo $field; ?> </label>
 						<select id="input1Type">
@@ -31,14 +30,11 @@ function refresh_fields() {
 							<label for="req_1">Required field?</label>
 						</span>
 					</div>
-				<?php endif; ?>	
 			<?php endforeach; ?>
 		</div>
 		<a href="<?php echo $base_url ?>/form_build">Back to previous step</a>
 		<input type="submit" value="Submit form" />
 	</form>
-
 </div>
-
 </body>
 </html>

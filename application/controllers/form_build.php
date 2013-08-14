@@ -37,6 +37,7 @@ class Form_build extends Base_Controller {
 
     public function entity_info()
     {
+        $this->load->model('formatter');
         $format = $this->formatter->get_format();
         $fields = $format['fields'];
 
@@ -47,8 +48,6 @@ class Form_build extends Base_Controller {
             $fields[$key]['options'] =
                 $this->input->post('options'.$key) ? explode('\n', $this->input->post('options'.$key)) : null;
         }
-
-        $this->load->model('formatter');
         $this->formatter->detail_fields($fields);
 
         $this->load->view('entity_info', $this->data);
