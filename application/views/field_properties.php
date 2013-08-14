@@ -9,6 +9,9 @@
 	function refresh_fields() {
 		document.forms['field-properties'].submit();
 	}
+	function especial_fields() {
+		if (true) {};
+	}
 </script>
 <div id="container">
 	<form id="field-properties" method="post" action="<?php echo $base_url ?>form_build/save_properties">
