@@ -6,9 +6,9 @@
 </head>
 <body>
 <script type="text/javascript">
-function refresh_fields() {
-	document.forms['field-properties'].submit();
-}
+	function refresh_fields() {
+		document.forms['field-properties'].submit();
+	}
 </script>
 <div id="container">
 	<form id="field-properties" method="post" action="<?php echo $base_url ?>form_build/save_properties">
@@ -51,8 +51,6 @@ function refresh_fields() {
 		<a href="<?php echo $base_url ?>/form_build">Back to previous step</a>
 		<input type="submit" value="Submit form" />
 	</form>
-
 </div>
-
 </body>
 </html>

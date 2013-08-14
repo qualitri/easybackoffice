@@ -47,7 +47,6 @@ class Form_build extends Base_Controller {
             $fields[$key]['options'] =
                 $this->input->post('options'.$key) ? explode('\n', $this->input->post('options'.$key)) : null;
         }
-
         $this->formatter->detail_fields($fields);
         redirect(base_url('form_build/field_properties'));
     }
