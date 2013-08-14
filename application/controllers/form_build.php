@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Form_build extends CI_Controller {
+class Form_build extends Base_Controller {
 
 	public function index()
 	{
@@ -11,28 +11,28 @@ class Form_build extends CI_Controller {
     {
         $this->load->model('formatter');
         $field_labels = $this->formatter->get_field_labels();
-        $data['field_list'] =  implode("\n", $field_labels);
-        $this->load->view('add_fields', $data);
+        $this->data['field_list'] =  implode("\n", $field_labels);
+        $this->load->view('add_fields', $this->data);
     }
 
     public function save_fields()
     {
         $field_list = $this->input->post('field_list');
         $field_list = explode("\n", $field_list);
-        $data['field_list'] = $field_list; 
+        $data['field_list'] = $field_list;
+
         $this->load->model('formatter');
-        $this->load->helper('url');
 
         $this->formatter->define_fields($field_list); 
-        redirect('Form_build/add_fields');
+        redirect(base_url('form_build/add_fields'));
     }
 
     public function field_properties()
     {
          $this->load->model('formatter');
         $field_labels = $this->formatter->get_field_labels();
-        $data['field_list'] =  $field_labels;
-        $this->load->view('field_properties', $data);
+        $this->data['field_list'] =  $field_labels;
+        $this->load->view('field_properties', $this->data);
     }
 
     public function entity_info()
@@ -51,7 +51,7 @@ class Form_build extends CI_Controller {
         $this->load->model('formatter');
         $this->formatter->detail_fields($fields);
 
-        $this->load->view('entity_info');
+        $this->load->view('entity_info', $this->data);
     }
 
     public function go_to_export()
@@ -61,7 +61,7 @@ class Form_build extends CI_Controller {
         $this->load->model('formatter');
         $this->formatter->set_entity_info($entity_name);
 
-        redirect('export');
+        redirect(base_url('export'));
     }
 }
 

@@ -9,7 +9,7 @@ class Formatter extends CI_Model
             if($field != '')
             {
                 $label = trim($field);
-                $name = $label; //clean_string($field);
+                $name = clean_string($field);
                 $fields[$name] = array('label' => $label, 'name' => $name);
                 unset($fields[$key]);
             }

@@ -4,7 +4,7 @@ define('CI', 'Code Igniter');
 define('PS', 'Prestashop');
 define('DRUPAL', 'Drupal');
 
-class Export extends CI_Controller {
+class Export extends Base_Controller {
 
 	public function index()
 	{
@@ -13,7 +13,7 @@ class Export extends CI_Controller {
 
     public function export_types()
     {
-        $this->load->view('export_types');
+        $this->load->view('export_types', $this->data);
     }
 
     public function generate()
@@ -32,7 +32,7 @@ class Export extends CI_Controller {
 
         $this->exporter->generate_files($format);
 
-        $this->load->view('export_types');
+        $this->load->view('export_types', $this->data);
 
     }
 

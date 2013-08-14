@@ -23,7 +23,8 @@ function refresh_fields() {
 							<option value="password">Password</option>
 							<option value="textarea">Text area</option>
 							<option value="select">Select/drop-down list</option>
-							<option value="checkbox">Checkbox</option><option value="radio">Radio buttons</option>
+							<option value="checkbox">Checkbox</option>
+                            <option value="radio">Radio buttons</option>
 						</select>
 						<span class="required">
 							<input type="checkbox" class="chkboxReq" id="req_1" value="req">
@@ -33,7 +34,7 @@ function refresh_fields() {
 				<?php endif; ?>	
 			<?php endforeach; ?>
 		</div>
-		<a href="http://easybackoffice.localhost/index.php/form_build">Back to previous step</a>
+		<a href="<?php echo $base_url ?>/form_build">Back to previous step</a>
 		<input type="submit" value="Submit form" />
 	</form>
 

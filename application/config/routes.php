@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "form_build";
+$route['default_controller'] = "container";
 $route['404_override'] = '';
 
 

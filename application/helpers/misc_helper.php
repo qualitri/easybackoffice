@@ -7,5 +7,5 @@ function replace_strings($string){
 }
 
 function clean_string($string){
-    return str_replace(array('(',')','[',']','{','}',' '), '', replace_strings(trim($string)));
+    return str_replace(array('(',')','[',']','{','}'), '', replace_strings(trim($string)));
 }
