@@ -53,8 +53,10 @@ class Form_build extends Base_Controller {
 
     public function entity_info()
     {
+        $this->load->model('formatter');
+        $entity_info = $this->formatter->get_entity_info();
 
-
+        $this->data['entity_info'] = !empty($entity_info) ? $entity_info : null;
         $this->load->view('entity_info', $this->data);
     }
 
