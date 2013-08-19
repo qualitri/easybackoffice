@@ -32,8 +32,6 @@ class Form_build extends Base_Controller {
         $this->formatter->define_fields($field_list);
 
         $this->session->set_userdata('step', 2);
-
-        //redirect(base_url('form_build/add_fields'));
     }
 
     public function field_properties()
@@ -60,8 +58,6 @@ class Form_build extends Base_Controller {
         $this->formatter->detail_fields($fields);
 
         $this->session->set_userdata('step', 3);
-
-        //redirect(base_url('form_build/field_properties'));
     }
 
     public function entity_info()
@@ -81,33 +77,7 @@ class Form_build extends Base_Controller {
         $this->formatter->set_entity_info($entity_name);
 
         $this->session->set_userdata('step', 4);
-
-        //redirect(base_url('form_build/entity_info'));
     }
-
-    /*public function save_field_values()
-    {
-        $value_list = $this->input->post('special_list'); //step 1 textarea
-
-        $value_list = explode("\n", $value_list);
-        $data['value_list'] = $value_list;
-
-        $this->load->model('formatter');
-
-        $this->formatter->set_field_values($value_list);
-        var_dump($this->formatter->get_format());
-
-        redirect(base_url('form_build/field_properties'));
-    }
-
-    public function field_values()
-    {
-        $this->load->model('formatter');
-        $entity_info = $this->formatter->get_field_values();
-
-        $this->data['field_values'] = !empty($field_values) ? $field_values : null;
-        $this->load->view('field-properties', $this->data);
-    }*/
 
 }
 
