@@ -6,6 +6,9 @@
 	<meta charset="utf-8">
 	<title>Bienvenido a Qualitri Form</title>
     <script src="<?php echo $js_path ?>/jquery-1.9.1.min.js"></script>
+    <script src="<?php echo $js_path ?>/vendor/bootstrap.min.js"></script>
+    <link href="<?php echo $css_path ?>/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="<?php echo $css_path ?>/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -76,7 +79,7 @@
 
 		</div>
 
-		<input type="submit" value="Submit form" />
+		<input class="btn btn-xs btn-success" type="submit" value="Submit form" />
 
 	</form>
 
