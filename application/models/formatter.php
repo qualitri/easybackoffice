@@ -126,6 +126,6 @@ class Formatter extends CI_Model
     {
         $format = $this->get_format();
         $entity_info = $format['value'];
-        return $field_values;
+        //die(var_dump($field_values));
     }
 }

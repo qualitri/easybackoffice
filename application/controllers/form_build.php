@@ -16,8 +16,7 @@ class Form_build extends Base_Controller {
     }
 
     public function save_fields()
-    { 
-        
+    {
         $field_list = $this->input->post('field_list'); //step 1 textarea
 
         $field_list = explode("\n", $field_list);
@@ -50,10 +49,11 @@ class Form_build extends Base_Controller {
             $fields[$key]['type'] = $this->input->post('type'.$key);
             $fields[$key]['required'] = $this->input->post('required'.$key) ? 1 : 0;
             $fields[$key]['options'] =
-                $this->input->post('options'.$key) ? explode('\n', $this->input->post('options'.$key)) : null;
+                $this->input->post('options'.$key) ? explode("\n", $this->input->post('options'.$key)) : null;
         }
         $this->formatter->detail_fields($fields);
-         redirect(base_url('form_build/field_properties'));
+
+        redirect(base_url('form_build/field_properties'));
     }
 
     public function entity_info()
@@ -98,6 +98,7 @@ class Form_build extends Base_Controller {
         $this->data['field_values'] = !empty($field_values) ? $field_values : null;
         $this->load->view('field-properties', $this->data);
     }
+
 }
 
 /* End of file form_builder.php */
