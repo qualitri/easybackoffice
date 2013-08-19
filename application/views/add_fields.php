@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>Bienvenido a Qualitri Form</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <script src="<?php echo $js_path ?>/vendor/bootstrap.min.js"></script>
     <link href="<?php echo $css_path ?>/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<?php echo $css_path ?>/bootstrap-responsive.min.css" rel="stylesheet">
