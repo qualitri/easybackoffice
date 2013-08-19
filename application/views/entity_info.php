@@ -6,7 +6,7 @@
         <input type="text" id="entityName" name="entity_name"
             value="<?php echo isset($entity_info['name']) ? $entity_info['name'] : '' ?>">
     </div>
-    <input type="submit" value="Go to Export" />
+    <input class="btn btn-xs btn-success" type="submit" value="Go to Export" />
 </form>
 
 <?php endif ?>

@@ -65,7 +65,7 @@
 
     </div>
 
-    <input type="submit" value="Save Properties" />
+    <input class="btn btn-xs btn-success" type="submit" value="Save Properties" />
 
 </form>
 

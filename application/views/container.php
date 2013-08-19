@@ -3,10 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<title>Bienvenido a Qualitri Form</title>
+
+    <link href="<?php echo $css_path ?>/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="<?php echo $css_path ?>/bootstrap-responsive.min.css" rel="stylesheet">
+
     <script>
         HOST = "<?php echo $base_url ?>";
     </script>
+
     <script src="<?php echo $js_path ?>/vendor/jquery-1.9.1.min.js"></script>
+    <script src="<?php echo $js_path ?>/vendor/bootstrap.min.js"></script>
+
 </head>
 <body>
 
