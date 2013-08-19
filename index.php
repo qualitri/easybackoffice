@@ -19,6 +19,7 @@
  *
  */
 	define('ENVIRONMENT', 'development');
+	define('HOSTNAME',function_exists('gethostname') ?gethostname():'production.server');
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING

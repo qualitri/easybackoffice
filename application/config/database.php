@@ -64,6 +64,49 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+$db['QUALITRI']['hostname'] = '192.168.0.20';
+$db['QUALITRI']['username'] = '';
+$db['QUALITRI']['password'] = '';
+$db['QUALITRI']['database'] = '';
+$db['QUALITRI']['dbdriver'] = 'mysql';
+$db['QUALITRI']['dbprefix'] = '';
+$db['QUALITRI']['pconnect'] = TRUE;
+$db['QUALITRI']['db_debug'] = FALSE;
+$db['QUALITRI']['cache_on'] = FALSE;
+$db['QUALITRI']['cachedir'] = '';
+$db['QUALITRI']['char_set'] = 'utf8';
+$db['QUALITRI']['dbcollat'] = 'utf8_general_ci';
+$db['QUALITRI']['swap_pre'] = '';
+$db['QUALITRI']['autoinit'] = TRUE;
+$db['QUALITRI']['stricton'] = FALSE;
 
+$db['PROD']['hostname'] = '';
+$db['PROD']['username'] = '';
+$db['PROD']['password'] = '';
+$db['PROD']['database'] = '';
+$db['PROD']['dbdriver'] = 'mysql';
+$db['PROD']['dbprefix'] = '';
+$db['PROD']['pconnect'] = TRUE;
+$db['PROD']['db_debug'] = FALSE;
+$db['PROD']['cache_on'] = FALSE;
+$db['PROD']['cachedir'] = '';
+$db['PROD']['char_set'] = 'utf8';
+$db['PROD']['dbcollat'] = 'utf8_general_ci';
+$db['PROD']['swap_pre'] = '';
+$db['PROD']['autoinit'] = TRUE;
+$db['PROD']['stricton'] = FALSE;
+
+$active_group = 'default';
+$hostname = 'localhost';
+
+if(HOSTNAME == 'copernicus') {//dev server
+    $active_group = 'QUALITRI';
+    $hostname = '192.168.0.20';
+}
+
+if(HOSTNAME == 'prod-hostname') {//prod server
+    $active_group = 'PROD';
+    $hostname = '';
+}
 /* End of file database.php */
 /* Location: ./application/config/database.php */
