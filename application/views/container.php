@@ -10,6 +10,7 @@
 <body>
 	<script type="text/javascript">
 		function newfields () {
+			/*save_special_fields_list();*/
 			document.getElementById('second-step').contentDocument.location.reload(true);
             document.getElementById('third-step').contentDocument.location.reload(true);
 		}

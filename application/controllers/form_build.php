@@ -16,14 +16,17 @@ class Form_build extends Base_Controller {
     }
 
     public function save_fields()
-    {
-        $field_list = $this->input->post('field_list');
+    { 
+        
+        $field_list = $this->input->post('field_list'); //step 1 textarea
+
         $field_list = explode("\n", $field_list);
         $data['field_list'] = $field_list;
 
         $this->load->model('formatter');
 
         $this->formatter->define_fields($field_list); 
+
         redirect(base_url('form_build/add_fields'));
     }
 
@@ -37,6 +40,8 @@ class Form_build extends Base_Controller {
 
     public function save_properties()
     {
+        $this->save_field_values(); //save step 2 textarea options
+
         $this->load->model('formatter');
         $fields = $this->formatter->get_fields();
 
@@ -48,7 +53,7 @@ class Form_build extends Base_Controller {
                 $this->input->post('options'.$key) ? explode('\n', $this->input->post('options'.$key)) : null;
         }
         $this->formatter->detail_fields($fields);
-        redirect(base_url('form_build/field_properties'));
+         redirect(base_url('form_build/field_properties'));
     }
 
     public function entity_info()
@@ -68,6 +73,30 @@ class Form_build extends Base_Controller {
         $this->formatter->set_entity_info($entity_name);
 
         redirect(base_url('export'));
+    }
+
+    public function save_field_values()
+    {   
+        $value_list = $this->input->post('special_list'); //step 1 textarea
+
+        $value_list = explode("\n", $value_list);
+        $data['value_list'] = $value_list;
+
+        $this->load->model('formatter');
+
+        $this->formatter->set_field_values($value_list);
+        /*var_dump($this->formatter->get_format());*/
+
+        /*redirect(base_url('form_build/field_properties'));*/
+    }
+
+    public function field_values()
+    {
+        $this->load->model('formatter');
+        $entity_info = $this->formatter->get_field_values();
+
+        $this->data['field_values'] = !empty($field_values) ? $field_values : null;
+        $this->load->view('field-properties', $this->data);
     }
 }
 

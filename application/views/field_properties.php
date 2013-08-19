@@ -35,7 +35,7 @@
                         <option value="radio">Radio buttons</option>
                         <?php endif ?>
                     </select>
-                    <div id="<?php echo $field['name']; ?>" class="specialField"></div>
+                    <div id="<?php echo $field['name']; ?>" class="specialField"><?php //echo $field_values; ?></div>
                     <span class="required">
                         <input type="checkbox" class="chkboxReq" id="req_1" name="<?php echo 'required'.$field['name'] ?>"
                             <?php if(isset($field['required'])) echo ($field['required']) ? 'checked' : ''  ?>>
@@ -44,7 +44,6 @@
                 </div>
 			<?php endforeach; ?>
 		</div>
-		<a href="<?php echo $base_url ?>/form_build">Back to previous step</a>
 		<input type="submit" value="Submit form" />
 	</form>
 </div>
@@ -71,10 +70,12 @@
 			var textarea = document.createElement("textarea");
 			textarea.id = "special";
 			textarea.setAttribute('placeholder', "insert "+val+" options")
+			textarea.name = 'special_list';
+			/*textarea.value = 'field-properties';*/
 			 
 			newdiv.appendChild(textarea);
 			frag.appendChild(newdiv);
-			 
+
 			target.appendChild(frag);
 		}
 

@@ -17,7 +17,8 @@ class Formatter extends CI_Model
 
         $format = array(
             'fields' => $fields,
-            'entity' => array()
+            'entity' => array(),
+            'values' => array() //textarea special fields values
         );
 
         $this->set_format($format);
@@ -111,5 +112,20 @@ class Formatter extends CI_Model
         $format = $this->get_format();
         $entity_info = $format['entity'];
         return $entity_info;
+    }
+
+    public function set_field_values($value_list)
+    {
+        $format = $this->get_format();
+        $format['values']['name'] = $value_list;
+
+        $this->set_format($format);
+    }
+
+    public function get_field_values()
+    {
+        $format = $this->get_format();
+        $entity_info = $format['value'];
+        return $field_values;
     }
 }
