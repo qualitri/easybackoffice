@@ -49,6 +49,7 @@ class Formatter extends CI_Model
             }
 
             $format['fields'][$key]['options'] = $options;
+            $format['fields'][$key]['options_raw'] = $field['options'];
         }
 
         $this->set_format($format);
@@ -114,7 +115,7 @@ class Formatter extends CI_Model
         return $entity_info;
     }
 
-    public function set_field_values($value_list)
+    /*public function set_field_values($value_list)
     {
         $format = $this->get_format();
         $format['values']['name'] = $value_list;
@@ -127,5 +128,5 @@ class Formatter extends CI_Model
         $format = $this->get_format();
         $entity_info = $format['value'];
         //die(var_dump($field_values));
-    }
+    }*/
 }

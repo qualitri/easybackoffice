@@ -6,6 +6,11 @@ define('DRUPAL', 'Drupal');
 
 class Export extends Base_Controller {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
 	public function index()
 	{
 		if($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])

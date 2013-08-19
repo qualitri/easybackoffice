@@ -2,6 +2,11 @@
 
 class Form_build extends Base_Controller {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
 	public function index()
 	{
 		$this->add_fields();
@@ -17,14 +22,16 @@ class Form_build extends Base_Controller {
 
     public function save_fields()
     {
-        $field_list = $this->input->post('field_list'); //step 1 textarea
+        $field_list = $this->input->post('field_list');
 
         $field_list = explode("\n", $field_list);
         $data['field_list'] = $field_list;
 
         $this->load->model('formatter');
 
-        $this->formatter->define_fields($field_list); 
+        $this->formatter->define_fields($field_list);
+
+        $this->session->set_userdata('step', 2);
 
         redirect(base_url('form_build/add_fields'));
     }
@@ -32,15 +39,13 @@ class Form_build extends Base_Controller {
     public function field_properties()
     {
         $this->load->model('formatter');
-        $fields = $this->formatter->get_fields();//die(print_r($fields));
+        $fields = $this->formatter->get_fields();
         $this->data['fields'] = !empty($fields) ? $fields : array();
         $this->load->view('field_properties', $this->data);
     }
 
     public function save_properties()
     {
-        $this->save_field_values(); //save step 2 textarea options
-
         $this->load->model('formatter');
         $fields = $this->formatter->get_fields();
 
@@ -49,9 +54,12 @@ class Form_build extends Base_Controller {
             $fields[$key]['type'] = $this->input->post('type'.$key);
             $fields[$key]['required'] = $this->input->post('required'.$key) ? 1 : 0;
             $fields[$key]['options'] =
-                $this->input->post('options'.$key) ? explode("\n", $this->input->post('options'.$key)) : null;
+                trim($this->input->post('options'.$key)) != '' ? explode("\n", $this->input->post('options'.$key)) : null;
         }
+
         $this->formatter->detail_fields($fields);
+
+        $this->session->set_userdata('step', 3);
 
         redirect(base_url('form_build/field_properties'));
     }
@@ -72,11 +80,13 @@ class Form_build extends Base_Controller {
         $this->load->model('formatter');
         $this->formatter->set_entity_info($entity_name);
 
+        $this->session->set_userdata('step', 4);
+
         redirect(base_url('export'));
     }
 
-    public function save_field_values()
-    {   
+    /*public function save_field_values()
+    {
         $value_list = $this->input->post('special_list'); //step 1 textarea
 
         $value_list = explode("\n", $value_list);
@@ -85,9 +95,9 @@ class Form_build extends Base_Controller {
         $this->load->model('formatter');
 
         $this->formatter->set_field_values($value_list);
-        /*var_dump($this->formatter->get_format());*/
+        var_dump($this->formatter->get_format());
 
-        /*redirect(base_url('form_build/field_properties'));*/
+        redirect(base_url('form_build/field_properties'));
     }
 
     public function field_values()
@@ -97,7 +107,7 @@ class Form_build extends Base_Controller {
 
         $this->data['field_values'] = !empty($field_values) ? $field_values : null;
         $this->load->view('field-properties', $this->data);
-    }
+    }*/
 
 }
 
