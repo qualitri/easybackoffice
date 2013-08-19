@@ -1,105 +1,87 @@
 <?php if($this->session->userdata('step') >= 2): ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-	<meta charset="utf-8">
-	<title>Bienvenido a Qualitri Form</title>
-    <script src="<?php echo $js_path ?>/jquery-1.9.1.min.js"></script>
-</head>
+<form id="field-properties" method="post" action="<?php echo $base_url ?>form_build/save_properties">
 
-<body>
-<div id="container">
+    <div class="fields_generated">
 
-	<form id="field-properties" method="post" action="<?php echo $base_url ?>form_build/save_properties">
+        <?php foreach ($fields as $field): ?>
 
-		<div class="fields_generated">
+        <div class="field field-<?php echo $field['name'] ?>">
 
-			<?php foreach ($fields as $field): ?>
+            <label for="<?php echo 'type'.$field['name'] ?>"> <?php echo $field['label'] ?> </label>
 
-            <div class="field field-<?php echo $field['name'] ?>">
+            <select class="selectType" onchange="special_fields(this)" name="<?php echo 'type'.$field['name'] ?>"  id="<?php echo 'type'.$field['name'] ?>">
 
-                <label for="<?php echo 'type'.$field['name'] ?>"> <?php echo $field['label'] ?> </label>
+                <?php if(isset($field['type'])): ?>
 
-                <select class="selectType" onchange="special_fields(this)" name="<?php echo 'type'.$field['name'] ?>"  id="<?php echo 'type'.$field['name'] ?>">
+                <option <?php echo ($field['type'] == 'text') ? 'selected' : '' ?>
+                    value="text">Text input</option>
+                <option <?php echo ($field['type'] == 'password') ? 'selected' : '' ?>
+                    value="password">Password</option>
+                <option <?php echo ($field['type'] == 'textarea') ? 'selected' : '' ?>
+                    value="textarea">Text area</option>
+                <option <?php echo ($field['type'] == 'checkbox') ? 'selected' : '' ?>
+                    value="checkbox">Checkbox</option>
+                <option <?php echo ($field['type'] == 'select') ? 'selected' : '' ?>
+                    value="select">Select/drop-down list</option>
+                <option <?php echo ($field['type'] == 'checkbox_group') ? 'selected' : '' ?>
+                    value="checkbox_group">Checkbox Group</option>
+                <option <?php echo ($field['type'] == 'radio') ? 'selected' : '' ?>
+                    value="radio">Radio buttons</option>
 
-                    <?php if(isset($field['type'])): ?>
+                <?php else: ?>
 
-                    <option <?php echo ($field['type'] == 'text') ? 'selected' : '' ?>
-                        value="text">Text input</option>
-                    <option <?php echo ($field['type'] == 'password') ? 'selected' : '' ?>
-                        value="password">Password</option>
-                    <option <?php echo ($field['type'] == 'textarea') ? 'selected' : '' ?>
-                        value="textarea">Text area</option>
-                    <option <?php echo ($field['type'] == 'checkbox') ? 'selected' : '' ?>
-                        value="checkbox">Checkbox</option>
-                    <option <?php echo ($field['type'] == 'select') ? 'selected' : '' ?>
-                        value="select">Select/drop-down list</option>
-                    <option <?php echo ($field['type'] == 'checkbox_group') ? 'selected' : '' ?>
-                        value="checkbox_group">Checkbox Group</option>
-                    <option <?php echo ($field['type'] == 'radio') ? 'selected' : '' ?>
-                        value="radio">Radio buttons</option>
+                <option value="text">Text input</option>
+                <option value="password">Password</option>
+                <option value="textarea">Text area</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="select">Select/drop-down list</option>
+                <option value="checkbox_group">Checkbox Group</option>
+                <option value="radio">Radio buttons</option>
 
-                    <?php else: ?>
+                <?php endif ?>
 
-                    <option value="text">Text input</option>
-                    <option value="password">Password</option>
-                    <option value="textarea">Text area</option>
-                    <option value="checkbox">Checkbox</option>
-                    <option value="select">Select/drop-down list</option>
-                    <option value="checkbox_group">Checkbox Group</option>
-                    <option value="radio">Radio buttons</option>
+            </select>
 
-                    <?php endif ?>
-
-                </select>
-
-                <div class="optionsField">
-                    <?php if(!empty($field['options'])): ?>
-                    <textarea id="options<?php echo $field['name'] ?>" name="options<?php echo $field['name'] ?>"
-                          placeholder="insert select options"><?php echo implode("\n", $field['options_raw']) ?></textarea>
-                    <?php else: ?>
-                    <textarea id="options<?php echo $field['name'] ?>" name="options<?php echo $field['name'] ?>"
-                          placeholder="insert options"></textarea>
-                    <?php endif ?>
-                </div>
-
-                <span class="required">
-                    <input type="checkbox" class="chkboxReq" id="req_1" name="<?php echo 'required'.$field['name'] ?>"
-                        <?php if(isset($field['required'])) echo ($field['required']) ? 'checked' : ''  ?>>
-                    <label for="req_1">Required field?</label>
-                </span>
-
+            <div class="optionsField">
+                <?php if(!empty($field['options'])): ?>
+                <textarea id="options<?php echo $field['name'] ?>" name="options<?php echo $field['name'] ?>"
+                      placeholder="insert select options"><?php echo implode("\n", $field['options_raw']) ?></textarea>
+                <?php else: ?>
+                <textarea id="options<?php echo $field['name'] ?>" name="options<?php echo $field['name'] ?>"
+                      placeholder="insert options"></textarea>
+                <?php endif ?>
             </div>
 
-			<?php endforeach; ?>
+            <span class="required">
+                <input type="checkbox" class="chkboxReq" id="req_1" name="<?php echo 'required'.$field['name'] ?>"
+                    <?php if(isset($field['required'])) echo ($field['required']) ? 'checked' : ''  ?>>
+                <label for="req_1">Required field?</label>
+            </span>
 
-		</div>
+        </div>
 
-		<input type="submit" value="Submit form" />
+        <?php endforeach; ?>
 
-	</form>
+    </div>
 
-</div>
+    <input type="submit" value="Save Properties" />
+
+</form>
+
 
 <script type="text/javascript">
 
-    $(document).ready(function()
+
+    $('.field').each(function(key, element)
     {
-        $('.field').each(function(key, element)
+        var type = $(element).find('.selectType').val();
+
+        if (type != 'select' && type != 'checkbox_group' && type != 'radio')
         {
-            var type = $(element).find('.selectType').val();
-
-            if (type != 'select' && type != 'checkbox_group' && type != 'radio')
-            {
-                $(element).find('.optionsField').hide();
-            }
-        });
+            $(element).find('.optionsField').hide();
+        }
     });
-
-	function refresh_fields() {
-		document.forms['field-properties'].submit();
-	}
 
 	function special_fields(element)
     {
@@ -114,44 +96,8 @@
             $(element).parent().children('.optionsField').hide();
         }
 
-		/*var val = element.value;
-		var id = element.id.substring(4);
-		var div = document.getElementById(id);
-		var el = div.querySelector('.field-container');
-
-		function add_textarea(target) {
-
-			var frag = document.createDocumentFragment();
-
-			var newdiv = document.createElement("div");
-			newdiv.className = "field-container";
-
-			var textarea = document.createElement("textarea");
-			textarea.id = "special";
-			textarea.setAttribute('placeholder', "insert "+val+" options")
-			textarea.name = 'options'<?php //echo $field['name'] ?>;
-			textarea.value = 'field-properties';
-
-			newdiv.appendChild(textarea);
-			frag.appendChild(newdiv);
-
-			target.appendChild(frag);
-		}
-
-		if (el !== null) {
-		    div.removeChild(el);
-		    add_textarea(div);
-		}
-		else
-		{
-			if (val == 'select' || val == 'checkbox' || val == 'radio') {
-				add_textarea(div);
-			}
-		};*/
-
 	}
 
 </script>
-</body>
-</html>
+
 <?php endif ?>

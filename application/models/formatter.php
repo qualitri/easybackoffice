@@ -79,8 +79,9 @@ class Formatter extends CI_Model
         {
             case 'text': return 'txt';
             case 'select': return 'sel';
-            case 'radio': return 'rdo';
             case 'checkbox': return 'chk';
+            case 'radio': return 'rdo';
+            case 'checkbox_group': return 'chkgr';
             case 'textarea': return 'txtar';
         }
     }

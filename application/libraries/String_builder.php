@@ -1,6 +1,6 @@
 <?php
 
-class StringBuilder
+class String_builder
 {
     private $string;
 

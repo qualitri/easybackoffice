@@ -6,12 +6,12 @@ define('DRUPAL', 'Drupal');
 
 class Export extends Base_Controller {
 
-    public function __construct()
+    function __construct()
     {
         parent::__construct();
     }
 
-	public function index()
+	function index()
 	{
 		if($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR'])
         {
@@ -25,51 +25,53 @@ class Export extends Base_Controller {
         }
 	}
 
-    public function export_local()
+    function export_local()
     {
         $this->load->view('export_local', $this->data);
     }
 
-    public function export_download()
+    function export_download()
     {
         $this->load->view('export_download', $this->data);
     }
 
-    public function generate()
+    function generate()
     {
-        $type = CI;//$this->input->post('export_type');
+        $this->load->model('formatter');
+        $format = $this->formatter->get_format();
+
+        /*$type = $this->input->post('export_type');
 
         switch($type)
         {
             case CI: $this->load->model('ci_exporter', 'exporter'); break;
             case PS: $this->load->model('ps_exporter', 'exporter'); break;
             case DRUPAL: $this->load->model('drupal_exporter', 'exporter'); break;
-        }
+        }*/
 
-        $this->load->model('formatter');
-        $format = $this->formatter->get_format();
-
+        $this->load->model('ci_exporter', 'exporter');
         $this->exporter->generate_files($format);
 
-        $this->load->view('export_types', $this->data);
+        //$this->load->view('export_local', $this->data);
 
     }
 
-    public function download()
+    function download()
     {
-        $type = CI;//$this->input->post('export_type');
+        $this->load->model('formatter');
+        $format = $this->formatter->get_format();
+
+
+        /*$type = $this->input->post('export_type');
 
         switch($type)
         {
             case CI: $this->load->model('ci_exporter', 'exporter'); break;
             case PS: $this->load->model('ps_exporter', 'exporter'); break;
             case DRUPAL: $this->load->model('drupal_exporter', 'exporter'); break;
-        }
+        }*/
 
-        $this->load->model('formatter');
-        $format = $this->formatter->get_format();
-
-        $this->load->model('exporter');
+        $this->load->model('ci_exporter', 'exporter');
         $this->exporter->generate_files($format);
 
         //$this->exporter->set_compress_method('.zip');

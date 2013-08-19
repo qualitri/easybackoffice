@@ -33,7 +33,7 @@ class Form_build extends Base_Controller {
 
         $this->session->set_userdata('step', 2);
 
-        redirect(base_url('form_build/add_fields'));
+        //redirect(base_url('form_build/add_fields'));
     }
 
     public function field_properties()
@@ -61,7 +61,7 @@ class Form_build extends Base_Controller {
 
         $this->session->set_userdata('step', 3);
 
-        redirect(base_url('form_build/field_properties'));
+        //redirect(base_url('form_build/field_properties'));
     }
 
     public function entity_info()
@@ -82,7 +82,7 @@ class Form_build extends Base_Controller {
 
         $this->session->set_userdata('step', 4);
 
-        redirect(base_url('export'));
+        //redirect(base_url('form_build/entity_info'));
     }
 
     /*public function save_field_values()

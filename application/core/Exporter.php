@@ -14,7 +14,7 @@ class Exporter extends CI_Model
 
     public function __construct()
     {
-        $this->export_dir_path = NULL;
+        $this->export_dir_path = str_replace('application', 'exportables', APPPATH);
         $this->compress_method = NULL;
         $this->compress_methods = array(self::ZIP, self::RAR, self::TAR_GZ, self::TAR_BZ);
     }
