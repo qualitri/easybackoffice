@@ -79,6 +79,7 @@ class CI_Exporter extends Exporter
     private function create_model($fields, $entity)
     {
         $this->load->library('string_builder');
+        $this->string_builder->flush_string();
 
         $this->string_builder->append("<?php\n\n");
 
@@ -111,8 +112,17 @@ class CI_Exporter extends Exporter
         }
         $this->string_builder->append("\t)\n");
 
+        $entity_variable_name = '$'.underlined_to_lower($entity['name']);
         $this->string_builder->append("\t{\n");
-        $this->string_builder->append("\t\t$".underlined_to_lower($entity['name']).";\n");
+        $this->string_builder->append("\t\t".$entity_variable_name.' = new '.joined_ucwords($entity['name'])."();\n");
+        $this->string_builder->append("\t\t".'$id = $id != null ? $id : uniqid(\''.$entity['prefix'].'\')');
+        $this->string_builder->append("\t\t".$entity_variable_name.'->set'.joined_ucwords('Id'.joined_ucwords($entity['name'])).'($id);'."\n");
+        foreach($fields as $field)
+        {
+            $underlined_lower = underlined_to_lower($field['name']);
+            $this->string_builder->append("\t\t".$entity_variable_name.'->set'.joined_ucwords($field['name']).'($'.$underlined_lower.');'."\n");
+        }
+        $this->string_builder->append("\t\treturn ".$entity_variable_name.";\n");
         $this->string_builder->append("\t}\n\n");
 
         //Insert
@@ -125,12 +135,14 @@ class CI_Exporter extends Exporter
 
     private function create_controller($fields, $entity)
     {
-
+        $this->load->library('string_builder');
+        $this->string_builder->flush_string();
     }
 
     private function create_views($fields, $entity)
     {
-
+        $this->load->library('string_builder');
+        $this->string_builder->flush_string();
     }
 
 }

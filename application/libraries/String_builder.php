@@ -23,4 +23,9 @@ class String_builder
     {
         return $this->string;
     }
+
+    public function flush_string()
+    {
+        $this->string = '';
+    }
 }
