@@ -162,7 +162,19 @@ class CI_Exporter extends Exporter
     private function create_views($fields, $entity)
     {
         $this->load->library('string_builder');
+
         $this->string_builder->flush_string();
+        
+        $this->string_builder->append("<form method='post' action='' id=".$entity['name']."> \n");
+        /*foreach ($fields as $field) {
+            $this->string_builder->append("<form method='post' action='' class=''> \n");
+        }*/
+        
+        //View File Creation
+        file_put_contents($this->get_export_dir_path().'/'.joined_to_lower($entity['name']).'_view.php', $this->string_builder->get_string());
+
+        
+
     }
 
 }
