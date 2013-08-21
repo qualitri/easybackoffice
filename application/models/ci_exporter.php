@@ -235,8 +235,26 @@ class CI_Exporter extends Exporter
         }
         $this->string_builder->append("</form> \n");
 
+        //View List
+        $template_list = file_get_contents(APPPATH.'templates/view/template_list.tpl');
+
+        $title = '';
+        $subtitle = '';
+        $entity_name = joined_ucwords($entity['name']);
+        $entity_name_lower = underlined_to_lower($entity_name);
+        $id_name = 'ID '.$entity_name;
+        $field_rep = spaced_ucwords($fields[0]['name']);
+        $field_rep_name = joined_ucwords($fields[0]['name']);
+
+        $from = array('{#title#}', '{#subtitle#}', '{#entity_name#}', '{#entity_name_lower#}', '{#id_name#}',
+            '{#field_rep#}', '{#field_rep_name#}');
+        $to = array($title, $subtitle, $entity_name, $entity_name_lower, $id_name, $field_rep, $field_rep_name);
+
+        $list_output = str_replace($from, $to, $template_list);
+
         //View File Creation
-        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_view.php', $this->string_builder->get_string());
+        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
+        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_list.php', $list_output);
 
     }
 
