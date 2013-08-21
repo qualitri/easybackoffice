@@ -92,70 +92,78 @@ class CI_Exporter extends Exporter
 
     private function create_model($fields, $entity)
     {
-        $this->load->library('string_builder');
-        $this->string_builder->flush_string();
+        $template = file_get_contents(APPPATH.'templates/model/template_model.php');
 
-        $this->string_builder->append("<?php\n\n");
+        $class_name = underlined_ucfirst($entity['name']);
+        $entity_name = joined_ucwords($entity['name']);
+        $entity_prefix = $entity['prefix'];
+        $entity_name_lower = underlined_to_lower($entity['name']);
 
-        //Class declaration
-        $this->string_builder->append('class '.joined_ucfirst($entity['name']).'_Model extends Base_Model');
-        $this->string_builder->append("\n{\n");
-
-        //Construct
-        $this->string_builder->append("\tfunction __construct()\n");
-        $this->string_builder->append("\t{\n");
-        $this->string_builder->append("\t\tparent::__construct();\n");
-        $this->string_builder->append("\t\t".'$this->table = \''.underlined_to_lower($entity['name'])."';\n");
-        $this->string_builder->append("\t\t".'$this->id_name = \'id_'.underlined_to_lower($entity['name'])."';\n");
-        $this->string_builder->append("\t\t".'$this->entity_name = \''.joined_ucwords($entity['name'])."';\n\n");
-        $this->string_builder->append("\t\trequire APPPATH.'entity/".joined_ucwords($entity['name']).".php';\n");
-        $this->string_builder->append("\t}\n\n");
-
-        //Create instance
-        $this->string_builder->append("\tfunction create_instance\n");
-        $this->string_builder->append("\t(\n");
-        $this->string_builder->append("\t\t $".'id = null'."\n");
+        $entity_params = array();
+        $set_properties = array();
         foreach($fields as $field)
         {
-            $underlined_lower = underlined_to_lower($field['name']);
-            $this->string_builder->append("\t\t,$".$underlined_lower.' = null'."\n");
+            $field_lower = underlined_to_lower($field['name']);
+            $entity_params[] = '$'.$field_lower.' = null';
+            $set_properties[] = '$'.$entity_name_lower.'->set'.joined_ucwords($field['name']).'($'.$field_lower.');';
         }
-        $this->string_builder->append("\t)\n");
+        $entity_params = implode("\n\t\t,", $entity_params);
+        $set_properties = implode("\n\t\t", $set_properties);
 
-        $entity_variable_name = '$'.underlined_to_lower($entity['name']);
-        $this->string_builder->append("\t{\n");
-        $this->string_builder->append("\t\t".$entity_variable_name.' = new '.joined_ucwords($entity['name'])."();\n");
-        $this->string_builder->append("\t\t".'$id = $id != null ? $id : $this->generate_uniqid(\''.$entity['prefix']."');\n");
-        $this->string_builder->append("\t\t".$entity_variable_name.'->setId'.joined_ucwords($entity['name']).'($id);'."\n");
-        foreach($fields as $field)
-        {
-            $underlined_lower = underlined_to_lower($field['name']);
-            $this->string_builder->append("\t\t".$entity_variable_name.'->set'.joined_ucwords($field['name']).'($'.$underlined_lower.');'."\n");
-        }
-        $this->string_builder->append("\t\treturn ".$entity_variable_name.";\n");
-        $this->string_builder->append("\t}\n\n");
+        $from = array('{#class_name#}', '{#entity_name#}', '{#entity_name_lower#}', '{#entity_prefix#}', '{#entity_params#}',
+            '{#set_properties#}');
+        $to = array($class_name, $entity_name, $entity_name_lower, $entity_prefix, $entity_params, $set_properties);
 
-        //Class closing
-        $this->string_builder->append("\n}");
+        $output = str_replace($from, $to, $template);
 
         //Model File Creation
-        file_put_contents($this->get_export_dir_path().'/model/'.joined_to_lower($entity['name']).'_model.php', $this->string_builder->get_string());
+        file_put_contents($this->get_export_dir_path().'/model/'.$entity_name_lower.'_model.php', $output);
 
     }
 
     private function create_controller($fields, $entity)
     {
-        $this->load->library('string_builder');
-        $this->string_builder->flush_string();
+        $template = file_get_contents(APPPATH.'templates/controller/template_admin.php');
 
-        $this->string_builder->append("<?php\n\n");
+        $class_name = underlined_ucfirst($entity['name']);
+        $entity_name = joined_ucwords($entity['name']);
+        $entity_name_lower = underlined_to_lower($entity_name);
+        $active = $entity_name_lower;
+        $model_name = $entity_name_lower;
+        $view_list_name = $entity_name_lower.'_list';
+        $view_form_name = $entity_name_lower.'_form';
 
-        //Class declaration
-        $this->string_builder->append('class '.underlined_ucfirst($entity['name']).'_admin extends Backoffice_Controller');
-        $this->string_builder->append("\n{\n");
+        $post_fields = array();
+        $rules = array();
+        foreach($fields as $field)
+        {
+            $post_fields[] = '$this->input->post(\''.$field['name'].'\')';
 
-        //Class closing
-        $this->string_builder->append("\n}");
+            $field_rules = array();
+            if($field['required'])
+                $field_rules[] = 'required';
+
+            if($field['type'] == 'text' || $field['type'] == 'txtar')
+            {
+                array_unshift($field_rules, 'trim');
+                array_push($field_rules, 'xss_clean');
+            }
+            $field_rules = implode('|', $field_rules);
+
+            $rules[] = 'array(\'field\' => \''.$field['name'].'\', \'label\' => \''.$field['label'].'\', \'rules\' => \''.$field_rules.'\')';
+        }
+        $post_fields = implode("\n\t\t,", $post_fields);
+        $rules = implode("\n\t\t,", $rules);
+
+        $from = array('{#class_name#}', '{#entity_name#}', '{#entity_name_lower#}', '{#active#}', '{#model_name#}',
+            '{#post_fields#}', '{#rules#}', '{#view_list_name#}', '{#view_form_name#}');
+        $to = array($class_name, $entity_name, $entity_name_lower, $active, $model_name, $post_fields, $rules,
+            $view_list_name, $view_form_name);
+
+        $output = str_replace($from, $to, $template);
+
+        //Controller File Creation
+        file_put_contents($this->get_export_dir_path().'/controller/'.$entity_name_lower.'_admin.php', $output);
 
     }
 
