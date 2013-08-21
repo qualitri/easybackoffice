@@ -176,10 +176,10 @@ class CI_Exporter extends Exporter
         $this->string_builder->append("<form method='post' action='' id='".$entity['name']."'> \n");
         foreach ($fields as $key => $field) {
             
-            if ($field['type'] == 'password' || $field['type'] == 'radio' || $field['type'] == 'text') {
+            if ($field['type'] == 'password' || $field['type'] == 'checkbox' || $field['type'] == 'text') {
 
                 $this->string_builder->append("\t<div class='control-group'> \n");
-                $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>");
+                $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                 $this->string_builder->append("\t\t<div class='controls'> \n");
                 $this->string_builder->append("\t\t\t<input type='".$field['type']."' placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
                 $this->string_builder->append("\t\t</div> \n");
@@ -188,17 +188,19 @@ class CI_Exporter extends Exporter
             else
             {    
                 switch ($field['type']) {
-                    case "checkbox":
+                    case "radio":
                         $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                         $this->string_builder->append("\t\t<div class='controls'> \n");
-                        $this->string_builder->append("\t\t\t<input type='".$field['type']."' placeholder='Insert Data' value='".$field[$key]."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                        foreach ($field['options'] as $key => $value) {
+                            $this->string_builder->append("\t\t\t<input type='".$field['type']."' placeholder='Insert Data' value='".$value."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                        }
                         $this->string_builder->append("\t\t</div> \n");
                         $this->string_builder->append("\t</div> \n");
                         break;
                     case "checkbox_group":
                         $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         foreach ($field['options'] as $key => $value) {
                             $this->string_builder->append("\t\t\t<input type='checkbox' placeholder='Insert Data' value='".$value."' class='input-xlarge' name='".$field['name']."[]"."' id='".$field['id']."_".$field['name']."'>\n");
@@ -208,7 +210,7 @@ class CI_Exporter extends Exporter
                         break;
                     case "textarea":
                         $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         $this->string_builder->append("\t\t\t<textarea placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
                         $this->string_builder->append("\t\t\t</textarea> \n");
@@ -217,12 +219,12 @@ class CI_Exporter extends Exporter
                         break;
                     case "select":
                         $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         $this->string_builder->append("\t\t\t<select class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
                         foreach ($field['options'] as $key => $value) {
 
-                            $this->string_builder->append("\t\t\t\t<option value='".$value."'>".$key."</option> \n");
+                            $this->string_builder->append("\t\t\t\t<option value='".$key."'>".$value."</option> \n");
                         }
                         $this->string_builder->append("\t\t\t</select> \n");
                         $this->string_builder->append("\t\t</div> \n");
