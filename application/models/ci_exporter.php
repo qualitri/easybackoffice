@@ -21,7 +21,7 @@ class CI_Exporter extends Exporter
         $this->export_dir_name = 'CI_Export_'.time();
         $this->export_dir_path = $this->export_dir_path.$this->export_dir_name;
         mkdir($this->export_dir_path);
-        mkdir($this->export_dir_path.'/cores');
+        mkdir($this->export_dir_path.'/core');
         mkdir($this->export_dir_path.'/entity');
         mkdir($this->export_dir_path.'/models');
         mkdir($this->export_dir_path.'/controllers');
@@ -92,7 +92,7 @@ class CI_Exporter extends Exporter
 
     private function create_model($fields, $entity)
     {
-        $template = file_get_contents(APPPATH.'templates/model/template_model.php');
+        $template = file_get_contents(APPPATH.'templates/model/template_model.tpl');
 
         $class_name = underlined_ucfirst($entity['name']);
         $entity_name = joined_ucwords($entity['name']);
@@ -123,7 +123,7 @@ class CI_Exporter extends Exporter
 
     private function create_controller($fields, $entity)
     {
-        $template = file_get_contents(APPPATH.'templates/controller/template_admin.php');
+        $template = file_get_contents(APPPATH.'templates/controller/template_admin.tpl');
 
         $class_name = underlined_ucfirst($entity['name']);
         $entity_name = joined_ucwords($entity['name']);
