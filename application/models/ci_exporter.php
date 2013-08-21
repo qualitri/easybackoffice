@@ -21,11 +21,11 @@ class CI_Exporter extends Exporter
         $this->export_dir_name = 'CI_Export_'.time();
         $this->export_dir_path = $this->export_dir_path.$this->export_dir_name;
         mkdir($this->export_dir_path);
-        mkdir($this->export_dir_path.'/core');
+        mkdir($this->export_dir_path.'/cores');
         mkdir($this->export_dir_path.'/entity');
-        mkdir($this->export_dir_path.'/model');
-        mkdir($this->export_dir_path.'/controller');
-        mkdir($this->export_dir_path.'/view');
+        mkdir($this->export_dir_path.'/models');
+        mkdir($this->export_dir_path.'/controllers');
+        mkdir($this->export_dir_path.'/views');
     }
 
     protected function process_format($format)
@@ -117,7 +117,7 @@ class CI_Exporter extends Exporter
         $output = str_replace($from, $to, $template);
 
         //Model File Creation
-        file_put_contents($this->get_export_dir_path().'/model/'.$entity_name_lower.'_model.php', $output);
+        file_put_contents($this->get_export_dir_path().'/models/'.$entity_name_lower.'_model.php', $output);
 
     }
 
@@ -163,7 +163,7 @@ class CI_Exporter extends Exporter
         $output = str_replace($from, $to, $template);
 
         //Controller File Creation
-        file_put_contents($this->get_export_dir_path().'/controller/'.$entity_name_lower.'_admin.php', $output);
+        file_put_contents($this->get_export_dir_path().'/controllers/'.$entity_name_lower.'_admin.php', $output);
 
     }
 
@@ -232,10 +232,9 @@ class CI_Exporter extends Exporter
             }         
         }
         $this->string_builder->append("</form> \n");
-        //View File Creation
-        file_put_contents($this->get_export_dir_path().'/'.joined_to_lower($entity['name']).'_view.php', $this->string_builder->get_string());
 
-        
+        //View File Creation
+        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_view.php', $this->string_builder->get_string());
 
     }
 
