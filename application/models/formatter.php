@@ -17,8 +17,7 @@ class Formatter extends CI_Model
 
         $format = array(
             'fields' => $fields,
-            'entity' => array(),
-            'values' => array() //textarea special fields values
+            'entity' => array()
         );
 
         $this->set_format($format);
@@ -32,7 +31,7 @@ class Formatter extends CI_Model
         {
             $format['fields'][$key]['type'] = $field['type'];
             $format['fields'][$key]['required'] = $field['required'];
-            $format['fields'][$key]['id'] = $this->get_prefix($field['type']);
+            $format['fields'][$key]['id'] = $this->get_prefix($field['type']).'_'.$field['name'];
 
             $options = array();
             if($field['options'] != null)

@@ -39,3 +39,13 @@ function underlined_ucfirst($string)
 {
     return ucfirst(strtolower(str_replace(' ', '_', $string)));
 }
+
+function spaced_ucwords($string)
+{
+    return ucwords(str_replace('_', ' ', $string));
+}
+
+function spaced_ucfirst($string)
+{
+    return ucfirst(str_replace('_', ' ', $string));
+}
