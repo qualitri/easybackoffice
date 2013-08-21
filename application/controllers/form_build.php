@@ -52,7 +52,7 @@ class Form_build extends Base_Controller {
             $fields[$key]['type'] = $this->input->post('type'.$key);
             $fields[$key]['required'] = $this->input->post('required'.$key) ? 1 : 0;
             $fields[$key]['options'] =
-                trim($this->input->post('options'.$key)) != '' ? explode("\n", $this->input->post('options'.$key)) : null;
+                trim($this->input->post('options'.$key)) != '' ? explode(PHP_EOL, $this->input->post('options'.$key)) : null;
         }
 
         $this->formatter->detail_fields($fields);
