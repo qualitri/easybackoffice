@@ -55,10 +55,11 @@ class Formatter extends CI_Model
         $this->set_format($format);
     }
 
-    public function set_entity_info($entity_name)
+    public function set_entity_info($entity_name, $entity_prefix)
     {
         $format = $this->get_format();
         $format['entity']['name'] = $entity_name;
+        $format['entity']['prefix'] = $entity_prefix;
 
         $this->set_format($format);
     }
@@ -116,18 +117,4 @@ class Formatter extends CI_Model
         return $entity_info;
     }
 
-    /*public function set_field_values($value_list)
-    {
-        $format = $this->get_format();
-        $format['values']['name'] = $value_list;
-
-        $this->set_format($format);
-    }
-
-    public function get_field_values()
-    {
-        $format = $this->get_format();
-        $entity_info = $format['value'];
-        //die(var_dump($field_values));
-    }*/
 }

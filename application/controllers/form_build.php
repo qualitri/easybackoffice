@@ -72,9 +72,10 @@ class Form_build extends Base_Controller {
     public function save_entity_info()
     {
         $entity_name = $this->input->post('entity_name');
+        $entity_prefix = $this->input->post('entity_prefix');
 
         $this->load->model('formatter');
-        $this->formatter->set_entity_info($entity_name);
+        $this->formatter->set_entity_info($entity_name, $entity_prefix);
 
         $this->session->set_userdata('step', 4);
     }

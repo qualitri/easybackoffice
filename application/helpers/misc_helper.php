@@ -17,7 +17,7 @@ function joined_ucwords($string)
 
 function joined_ucfirst($string)
 {
-    return str_replace(' ', '', ucfirst(str_replace('_', ' ', $string)));
+    return str_replace(' ', '', ucfirst(strtolower(str_replace('_', ' ', $string))));
 }
 
 function joined_to_lower($string)
@@ -33,4 +33,9 @@ function underlined($string)
 function underlined_to_lower($string)
 {
     return strtolower(str_replace(' ', '_', $string));
+}
+
+function underlined_ucfirst($string)
+{
+    return ucfirst(strtolower(str_replace(' ', '_', $string)));
 }

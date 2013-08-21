@@ -21,6 +21,11 @@ class CI_Exporter extends Exporter
         $this->export_dir_name = 'CI_Export_'.time();
         $this->export_dir_path = $this->export_dir_path.$this->export_dir_name;
         mkdir($this->export_dir_path);
+        mkdir($this->export_dir_path.'/core');
+        mkdir($this->export_dir_path.'/entity');
+        mkdir($this->export_dir_path.'/model');
+        mkdir($this->export_dir_path.'/controller');
+        mkdir($this->export_dir_path.'/view');
     }
 
     protected function process_format($format)
@@ -28,10 +33,18 @@ class CI_Exporter extends Exporter
         $fields = $format['fields'];
         $entity = $format['entity'];
 
+        $this->create_core();
         $this->create_entity($fields, $entity);
         $this->create_model($fields, $entity);
         $this->create_controller($fields, $entity);
         $this->create_views($fields, $entity);
+    }
+
+    private function create_core()
+    {
+        copy(APPPATH.'templates/core/Base_Model.php', $this->get_export_dir_path().'/core/Base_Model.php');
+        copy(APPPATH.'templates/core/Base_Controller.php', $this->get_export_dir_path().'/core/Base_Controller.php');
+        copy(APPPATH.'templates/core/Backoffice_Controller.php', $this->get_export_dir_path().'/core/Backoffice_Controller.php');
     }
 
     private function create_entity($fields, $entity)
@@ -69,10 +82,11 @@ class CI_Exporter extends Exporter
             $this->string_builder->append("\n\t}\n");
         }
 
+        //Class closing
         $this->string_builder->append("\n}");
 
         //Entity File Creation
-        file_put_contents($this->get_export_dir_path().'/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());
+        file_put_contents($this->get_export_dir_path().'/entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());
 
     }
 
@@ -84,27 +98,23 @@ class CI_Exporter extends Exporter
         $this->string_builder->append("<?php\n\n");
 
         //Class declaration
-        $this->string_builder->append('class '.joined_ucfirst($entity['name']).'_Model extends CI_Model');
+        $this->string_builder->append('class '.joined_ucfirst($entity['name']).'_Model extends Base_Model');
         $this->string_builder->append("\n{\n");
-
-        //Properties
-        $this->string_builder->append("\tprivate ".'$table;'."\n");
-        $this->string_builder->append("\tprivate ".'$id_name;'."\n");
-        $this->string_builder->append("\tprivate ".'$entity_class;'."\n\n");
 
         //Construct
         $this->string_builder->append("\tfunction __construct()\n");
         $this->string_builder->append("\t{\n");
-        $this->string_builder->append("\t\tparent::__construct();");
+        $this->string_builder->append("\t\tparent::__construct();\n");
         $this->string_builder->append("\t\t".'$this->table = \''.underlined_to_lower($entity['name'])."';\n");
-        $this->string_builder->append("\t\t".'$this->id_name = \' id_'.underlined_to_lower($entity['name'])."';\n");
+        $this->string_builder->append("\t\t".'$this->id_name = \'id_'.underlined_to_lower($entity['name'])."';\n");
         $this->string_builder->append("\t\t".'$this->entity_name = \''.joined_ucwords($entity['name'])."';\n\n");
-        $this->string_builder->append("\t\trequire APPPATH.'".joined_ucwords($entity['name']).".php';\n");
+        $this->string_builder->append("\t\trequire APPPATH.'entity/".joined_ucwords($entity['name']).".php';\n");
         $this->string_builder->append("\t}\n\n");
 
         //Create instance
-        $this->string_builder->append("\tfunction create_instance(\n");
-        $this->string_builder->append("\t\t$".'id = null'."\n");
+        $this->string_builder->append("\tfunction create_instance\n");
+        $this->string_builder->append("\t(\n");
+        $this->string_builder->append("\t\t $".'id = null'."\n");
         foreach($fields as $field)
         {
             $underlined_lower = underlined_to_lower($field['name']);
@@ -115,8 +125,8 @@ class CI_Exporter extends Exporter
         $entity_variable_name = '$'.underlined_to_lower($entity['name']);
         $this->string_builder->append("\t{\n");
         $this->string_builder->append("\t\t".$entity_variable_name.' = new '.joined_ucwords($entity['name'])."();\n");
-        $this->string_builder->append("\t\t".'$id = $id != null ? $id : uniqid(\''.$entity['prefix'].'\')');
-        $this->string_builder->append("\t\t".$entity_variable_name.'->set'.joined_ucwords('Id'.joined_ucwords($entity['name'])).'($id);'."\n");
+        $this->string_builder->append("\t\t".'$id = $id != null ? $id : $this->generate_uniqid(\''.$entity['prefix']."');\n");
+        $this->string_builder->append("\t\t".$entity_variable_name.'->setId'.joined_ucwords($entity['name']).'($id);'."\n");
         foreach($fields as $field)
         {
             $underlined_lower = underlined_to_lower($field['name']);
@@ -125,11 +135,11 @@ class CI_Exporter extends Exporter
         $this->string_builder->append("\t\treturn ".$entity_variable_name.";\n");
         $this->string_builder->append("\t}\n\n");
 
-        //Insert
-
+        //Class closing
+        $this->string_builder->append("\n}");
 
         //Model File Creation
-        file_put_contents($this->get_export_dir_path().'/'.joined_to_lower($entity['name']).'_model.php', $this->string_builder->get_string());
+        file_put_contents($this->get_export_dir_path().'/model/'.joined_to_lower($entity['name']).'_model.php', $this->string_builder->get_string());
 
     }
 
@@ -137,6 +147,16 @@ class CI_Exporter extends Exporter
     {
         $this->load->library('string_builder');
         $this->string_builder->flush_string();
+
+        $this->string_builder->append("<?php\n\n");
+
+        //Class declaration
+        $this->string_builder->append('class '.underlined_ucfirst($entity['name']).'_admin extends Backoffice_Controller');
+        $this->string_builder->append("\n{\n");
+
+        //Class closing
+        $this->string_builder->append("\n}");
+
     }
 
     private function create_views($fields, $entity)
