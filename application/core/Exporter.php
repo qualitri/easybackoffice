@@ -4,41 +4,47 @@ class Exporter extends CI_Model
 {
     protected $export_dir_path;
     protected $export_dir_name;
+
     protected $compress_method;
     protected $compress_methods;
 
-    const ZIP = '.zip';
-    const RAR = '.rar';
-    const TAR_GZ = '.tar.gz';
-    const TAR_BZ = '.tar.bz2';
-
     public function __construct()
     {
-        $this->export_dir_path = str_replace('application', 'exportables', APPPATH);
-        $this->compress_method = NULL;
-        $this->compress_methods = array(self::ZIP, self::RAR, self::TAR_GZ, self::TAR_BZ);
+        $this->export_dir_path = '';
+        $this->compress_method = Compressor::ZIP;
+        $this->compress_methods = array(Compressor::ZIP, Compressor::RAR, Compressor::TAR_GZ, Compressor::TAR_BZ);
     }
 
-    public function generate_files($format)
+    public function generate_files($format, $internally = false)
     {
-        $this->create_dir();
+        $this->create_dir($internally);
         $this->process_format($format);
     }
 
-    public function compress()
+    public function compress($compress_method)
     {
+        $this->set_compress_method($compress_method);
+        $this->load->library('compressor');
 
+        switch($compress_method)
+        {
+            case Compressor::ZIP: $this->compressor->zip(); return;
+            case Compressor::RAR: $this->compressor->rar(); return;
+            case Compressor::TAR_GZ: $this->compressor->targz(); return;
+            case Compressor::TAR_BZ: $this->compressor->tarbz(); return;
+            default: $this->compressor->zip(); return;
+        }
     }
 
-    public function set_compress_method($method)
+    public function set_compress_method($method = NULL)
     {
-        $this->compress_method = $method;
+        if($method != NULL && in_array($method, $this->compress_methods))
+            $this->compress_method = $method;
     }
 
     public function get_compress_method()
     {
-        return $this->compress_method != NULL && in_array($this->compress_method, $this->compress_methods) ?
-            $this->compress_method : self::TAR_GZ;
+        $this->compress_method;
     }
 
     public function get_export_dir_path()

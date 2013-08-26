@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /* Form Class for Admin */
-class Backoffice_Controller extends Base_Controller_exp
+class Backoffice_Controller extends Base_Controller
 {
 	protected $view_list;
     protected $view_form;

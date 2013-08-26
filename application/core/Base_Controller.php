@@ -11,9 +11,14 @@ class Base_Controller extends CI_Controller
         parent::__construct();
         self::$CI = &get_instance();
 
-        //$this->config->load('project');
+        $this->load->library(array('database','form_validation'));
+
+        $this->load->helper('url');
+        $this->load->helper('form');
 
         $this->data = array();
+        $this->data['data_controller'] = '';
+        $this->data['data_action'] = '';
 
         $this->data['base_url'] = base_url();
         $this->data['img_path'] = base_url('www/img');
