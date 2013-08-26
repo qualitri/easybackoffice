@@ -10,11 +10,12 @@ class Backoffice_Controller extends Base_Controller_exp
 	function __construct()
 	{
 		parent::__construct();
+
         if($this->session->userdata('logged_in') == FALSE) {
-           redirect(href('admin', 'auth', 'login'));
+            redirect(base_url('admin/auth_admin/login'));
+            $this->session->set_flashdata('admin_url', base_url($_SERVER['REQUEST_URI']));
         }
 
-        $this->load->library('images');
         $this->instances = array();
 	}
 
@@ -106,7 +107,6 @@ class Backoffice_Controller extends Base_Controller_exp
 	/* default list */
 	function list_all()
 	{
-        $this->setContext(func_get_args());
 		$this->data['list'] = $this->model->list_entries($this->instances);
         $this->load->view('admin/common/header_view', $this->data);
         $this->load->view('admin/'.$this->view_list, $this->data);

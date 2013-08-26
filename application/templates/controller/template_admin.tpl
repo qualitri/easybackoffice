@@ -9,7 +9,7 @@ class {#class_name#}_admin extends Backoffice_Controller
         $this->view_form = '{#view_form_name#}';
         $this->data['active'] = '{#active#}';
 
-        $this->load->model('{#model_name#}_model', 'model');
+        $this->load->model('admin/{#model_name#}_model', 'model');
     }
 
     function _from_form(){
