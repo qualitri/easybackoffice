@@ -11,7 +11,8 @@ class Backoffice_Controller extends Base_Controller_exp
 	{
 		parent::__construct();
         if($this->session->userdata('logged_in') == FALSE) {
-           redirect(href('admin', 'auth', 'login'));
+            redirect(base_url('admin/auth_admin/login'));
+            $this->session->set_flashdata('admin_url', base_url($_SERVER['REQUEST_URI']));
         }
 
         $this->load->library('images');

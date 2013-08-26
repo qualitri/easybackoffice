@@ -119,7 +119,7 @@ class CI_Exporter extends Exporter
 
         //Model File Creation
         /*file_put_contents($this->get_export_dir_path().'/models/'.$entity_name_lower.'_model.php', $output);*/
-        file_put_contents(APPPATH.'models/'.$entity_name_lower.'_model.php', $output);
+        file_put_contents(APPPATH.'admin/models/'.$entity_name_lower.'_model.php', $output);
 
     }
 

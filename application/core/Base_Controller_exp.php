@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /* Form Class for Admin */
-class Base_Controller extends CI_Controller
+class Base_Controller_exp extends CI_Controller
 {
     protected $data;
     protected static $CI;
