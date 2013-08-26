@@ -11,11 +11,10 @@ class Base_Controller extends CI_Controller
         parent::__construct();
         self::$CI = &get_instance();
 
-        $this->config->load('project');
-
         $this->load->library(array('form_validation'));
 
         $this->load->helper('url');
+        $this->load->helper('form');
 
         $this->data = array();
         $this->data['data_controller'] = '';
