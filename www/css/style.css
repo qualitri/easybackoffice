@@ -1,0 +1,22 @@
+h1{
+  text-align: center;
+  margin-bottom: 50px;
+  margin-top: 30px;	
+}
+form {
+  padding: 30px;
+  background: #E8ECEF;
+}
+.btn.btn-xs.btn-success {
+  display: block;
+}
+legend {
+  text-indent: 30px;	
+}
+legend.step-active{
+  background: #F4D0D2;
+  border: 1px solid;
+}
+#add-fields textarea{
+  margin-bottom: 20px;
+}

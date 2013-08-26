@@ -6,6 +6,7 @@
 
     <link href="<?php echo $css_path ?>/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="<?php echo $css_path ?>/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="<?php echo $css_path ?>/style.css" rel="stylesheet">
 
     <script>
         HOST = "<?php echo $base_url ?>";
@@ -17,31 +18,31 @@
 </head>
 <body>
 
-<div id="container">
-
+<div class="container">
+<h1>Backoffice Generator</h1>
     <div class="step-wrapper">
-        <h1>Step 1 - Add Fields</h1>
+        <legend id="step-1" class="step-active">Step 1 - Add Fields</legend>
         <div id="first-step">
             <?php echo file_get_contents(base_url('form_build/add_fields')) ?>
         </div>
     </div>
 
     <div class="step-wrapper">
-        <h1>Step 2 - Detail Fields</h1>
+        <legend id="step-2">Step 2 - Detail Fields</legend>
         <div id="second-step">
             <?php echo file_get_contents(base_url('form_build/field_properties')) ?>
         </div>
     </div>
 
     <div class="step-wrapper">
-        <h1>Step 3 - Entity Info</h1>
+        <legend id="step-3">Step 3 - Entity Info</legend>
         <div id="third-step">
             <?php echo file_get_contents(base_url('form_build/entity_info')) ?>
         </div>
     </div>
 
     <div class="step-wrapper">
-        <h1>Step 4 - Export</h1>
+        <legend id="step-4">Step 4 - Export</legend>
         <div id="fourth-step">
             <?php echo file_get_contents(base_url('export')) ?>
         </div>
@@ -76,18 +77,24 @@
         function step_one(form)
         {
             save_step_one(form);
+            document.getElementById("step-1").className = "";
+            document.getElementById("step-2").className += " step-active";
             //load_step_two();
         }
 
         function step_two(form)
         {
             save_step_two(form);
+            document.getElementById("step-2").className = "";
+            document.getElementById("step-3").className += " step-active";
             //load_step_three();
         }
 
         function step_three(form)
         {
             save_step_three(form);
+            document.getElementById("step-3").className = "";
+            document.getElementById("step-4").className += " step-active";
             //load_step_four();
         }
 

@@ -26,6 +26,10 @@ class CI_Exporter extends Exporter
         mkdir($this->export_dir_path.'/models');
         mkdir($this->export_dir_path.'/controllers');
         mkdir($this->export_dir_path.'/views');
+
+        mkdir('application/models/entity');
+        mkdir('application/controllers/admin');
+        mkdir('application/views/admin');
     }
 
     protected function process_format($format)
@@ -42,9 +46,12 @@ class CI_Exporter extends Exporter
 
     private function create_core()
     {
-        copy(APPPATH.'templates/core/Base_Model.php', $this->get_export_dir_path().'/core/Base_Model.php');
-        copy(APPPATH.'templates/core/Base_Controller.php', $this->get_export_dir_path().'/core/Base_Controller.php');
-        copy(APPPATH.'templates/core/Backoffice_Controller.php', $this->get_export_dir_path().'/core/Backoffice_Controller.php');
+        /*copy(APPPATH.'templates/core/Base_Model.php', $this->get_export_dir_path().'/core/Base_Model.php');
+        copy(APPPATH.'templates/core/Base_Controller_exp.php', $this->get_export_dir_path().'/core/Base_Controller_exp.php');
+        copy(APPPATH.'templates/core/Backoffice_Controller.php', $this->get_export_dir_path().'/core/Backoffice_Controller.php');*/
+        copy(APPPATH.'templates/core/Base_Model.php', 'application/core/Base_Model.php');
+        copy(APPPATH.'templates/core/Base_Controller_exp.php', 'application/core/Base_Controller_exp.php');
+        copy(APPPATH.'templates/core/Backoffice_Controller.php', 'application/core/Backoffice_Controller.php');
     }
 
     private function create_entity($fields, $entity)
@@ -86,7 +93,8 @@ class CI_Exporter extends Exporter
         $this->string_builder->append("\n}");
 
         //Entity File Creation
-        file_put_contents($this->get_export_dir_path().'/entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());
+        /*file_put_contents($this->get_export_dir_path().'/entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());*/
+        file_put_contents('models/entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());
 
     }
 
@@ -117,7 +125,8 @@ class CI_Exporter extends Exporter
         $output = str_replace($from, $to, $template);
 
         //Model File Creation
-        file_put_contents($this->get_export_dir_path().'/models/'.$entity_name_lower.'_model.php', $output);
+        /*file_put_contents($this->get_export_dir_path().'/models/'.$entity_name_lower.'_model.php', $output);*/
+        file_put_contents('application/models/'.$entity_name_lower.'_model.php', $output);
 
     }
 
@@ -163,7 +172,8 @@ class CI_Exporter extends Exporter
         $output = str_replace($from, $to, $template);
 
         //Controller File Creation
-        file_put_contents($this->get_export_dir_path().'/controllers/'.$entity_name_lower.'_admin.php', $output);
+        /*file_put_contents($this->get_export_dir_path().'/controllers/'.$entity_name_lower.'_admin.php', $output);*/
+        file_put_contents('application/controllers/admin/'.$entity_name_lower.'_admin.php', $output);
 
     }
 
@@ -173,7 +183,21 @@ class CI_Exporter extends Exporter
 
         $this->string_builder->flush_string();
         
-        $this->string_builder->append("<form method='post' action='' id='".$entity['name']."'> \n");
+        $this->string_builder->append("<!DOCTYPE html>");
+        $this->string_builder->append("<html lang='en'>");
+        $this->string_builder->append("<head>");
+        $this->string_builder->append("\t<meta charset='utf-8'>");
+        $this->string_builder->append("\t<title>Bienvenido a Qualitri Form</title>");
+
+        $this->string_builder->append("\t<link href='<?php echo \$css_path ?>/bootstrap.min.css' rel='stylesheet' media='screen'>");
+        $this->string_builder->append("\t<link href='<?php echo \$css_path ?>/bootstrap-responsive.min.css' rel='stylesheet'>");
+        $this->string_builder->append("\t<script src='<?php echo \$js_path ?>/vendor/bootstrap.min.js'></script>");
+
+        $this->string_builder->append("</head>");
+
+        $this->string_builder->append("<body>");
+
+        $this->string_builder->append("<form class='form-horizontal' method='post' action='' id='".$entity['name']."'> \n");
         $this->string_builder->append("\t<legend><?php echo \$this->lang->line('presentation_form') ?></legend>\n");
         $this->string_builder->append("\t<?php if(isset(\$entity)): ?>\n");
         foreach ($fields as $key => $field) {
@@ -241,7 +265,18 @@ class CI_Exporter extends Exporter
                 }
             }         
         }
+        $this->string_builder->append("\t<div class='control-group'>\n");
+        $this->string_builder->append("\t\t<div class='controls'>\n");
+        $this->string_builder->append("\t\t\t<button type='submit' class='btn btn-primary'>\n");
+        $this->string_builder->append("<?php echo \$form_action == 'save' ? \$this->lang->line('create') : \$this->lang->line('update') ?>\n");
+        $this->string_builder->append("\t\t\t</button>\n");
+        $this->string_builder->append("\t\t\t<a class='btn' href='<?php echo \$base_url.'admin/presentation' ?>'><?php echo \$this->lang->line('cancel') ?></a>\n");
+        $this->string_builder->append("\t\t</div>\n");
+        $this->string_builder->append("\t</div>\n");
+
         $this->string_builder->append("</form> \n");
+        $this->string_builder->append("</body>");
+        $this->string_builder->append("</html>");
 
         //View List
         $template_list = file_get_contents(APPPATH.'templates/view/template_list.tpl');
@@ -261,8 +296,10 @@ class CI_Exporter extends Exporter
         $list_output = str_replace($from, $to, $template_list);
 
         //View File Creation
-        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
-        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_list.php', $list_output);
+        /*file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
+        file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_list.php', $list_output);*/
+        file_put_contents('application/views/admin/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
+        file_put_contents('application/views/admin/'.underlined_to_lower($entity['name']).'_list.php', $list_output);
 
     }
 
