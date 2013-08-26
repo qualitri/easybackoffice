@@ -20,16 +20,12 @@ class CI_Exporter extends Exporter
     {
         $this->export_dir_name = 'CI_Export_'.time();
         $this->export_dir_path = $this->export_dir_path.$this->export_dir_name;
-        mkdir($this->export_dir_path);
+        /*mkdir($this->export_dir_path);
         mkdir($this->export_dir_path.'/core');
         mkdir($this->export_dir_path.'/entity');
         mkdir($this->export_dir_path.'/models');
         mkdir($this->export_dir_path.'/controllers');
-        mkdir($this->export_dir_path.'/views');
-
-        mkdir('application/models/entity');
-        mkdir('application/controllers/admin');
-        mkdir('application/views/admin');
+        mkdir($this->export_dir_path.'/views');*/
     }
 
     protected function process_format($format)
@@ -49,9 +45,6 @@ class CI_Exporter extends Exporter
         /*copy(APPPATH.'templates/core/Base_Model.php', $this->get_export_dir_path().'/core/Base_Model.php');
         copy(APPPATH.'templates/core/Base_Controller_exp.php', $this->get_export_dir_path().'/core/Base_Controller_exp.php');
         copy(APPPATH.'templates/core/Backoffice_Controller.php', $this->get_export_dir_path().'/core/Backoffice_Controller.php');*/
-        copy(APPPATH.'templates/core/Base_Model.php', 'application/core/Base_Model.php');
-        copy(APPPATH.'templates/core/Base_Controller_exp.php', 'application/core/Base_Controller_exp.php');
-        copy(APPPATH.'templates/core/Backoffice_Controller.php', 'application/core/Backoffice_Controller.php');
     }
 
     private function create_entity($fields, $entity)
@@ -94,7 +87,7 @@ class CI_Exporter extends Exporter
 
         //Entity File Creation
         /*file_put_contents($this->get_export_dir_path().'/entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());*/
-        file_put_contents('models/entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());
+        file_put_contents(APPPATH.'entity/'.joined_ucwords($entity['name']).'.php', $this->string_builder->get_string());
 
     }
 
@@ -126,7 +119,7 @@ class CI_Exporter extends Exporter
 
         //Model File Creation
         /*file_put_contents($this->get_export_dir_path().'/models/'.$entity_name_lower.'_model.php', $output);*/
-        file_put_contents('application/models/'.$entity_name_lower.'_model.php', $output);
+        file_put_contents(APPPATH.'models/'.$entity_name_lower.'_model.php', $output);
 
     }
 
@@ -173,7 +166,7 @@ class CI_Exporter extends Exporter
 
         //Controller File Creation
         /*file_put_contents($this->get_export_dir_path().'/controllers/'.$entity_name_lower.'_admin.php', $output);*/
-        file_put_contents('application/controllers/admin/'.$entity_name_lower.'_admin.php', $output);
+        file_put_contents(APPPATH.'controllers/admin/'.$entity_name_lower.'_admin.php', $output);
 
     }
 
@@ -298,8 +291,8 @@ class CI_Exporter extends Exporter
         //View File Creation
         /*file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
         file_put_contents($this->get_export_dir_path().'/views/'.underlined_to_lower($entity['name']).'_list.php', $list_output);*/
-        file_put_contents('application/views/admin/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
-        file_put_contents('application/views/admin/'.underlined_to_lower($entity['name']).'_list.php', $list_output);
+        file_put_contents(APPPATH.'views/admin/'.underlined_to_lower($entity['name']).'_form.php', $this->string_builder->get_string());
+        file_put_contents(APPPATH.'views/admin/'.underlined_to_lower($entity['name']).'_list.php', $list_output);
 
     }
 
