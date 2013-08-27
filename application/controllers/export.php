@@ -38,7 +38,7 @@ class Export extends Base_Controller {
         $this->load->view('export_download', $this->data);
     }
 
-    function generate()
+    function generate($in_project = false)
     {
         $this->load->model('formatter');
         $format = $this->formatter->get_format();
@@ -53,13 +53,13 @@ class Export extends Base_Controller {
         }*/
 
         $this->load->model('ci_exporter', 'exporter');
-        $this->exporter->generate_files($format);
+        $this->exporter->generate_files($format, $in_project);
 
         //$this->load->view('export_local', $this->data);
 
     }
 
-    function download()
+    function download($compress_method = NULL)
     {
         $this->load->model('formatter');
         $format = $this->formatter->get_format();
@@ -77,8 +77,7 @@ class Export extends Base_Controller {
         $this->load->model('ci_exporter', 'exporter');
         $this->exporter->generate_files($format);
 
-        //$this->exporter->set_compress_method('.zip');
-        $this->exporter->compress();
+        $this->exporter->compress($compress_method);
 
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename=".$this->exporter->get_compressed_file_name());
