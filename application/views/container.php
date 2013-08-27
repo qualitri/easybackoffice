@@ -135,10 +135,10 @@
 
         function save_step_four(form)
         {
-            if($(form).attr('action') == "<?php echo $base_url ?>export/generate")
+            if($(form).attr('action') == "<?php echo $base_url ?>export/generate/in_project")
             {
                 $.post(
-                    "<?php echo $base_url ?>export/generate",
+                    "<?php echo $base_url ?>export/generate/in_project",
                     $(form).serialize()
                 ).done(function(data) {
                     alert('Your files have been generated');

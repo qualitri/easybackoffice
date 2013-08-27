@@ -10,6 +10,7 @@ class Exporter extends CI_Model
 
     public function __construct()
     {
+        $this->load->library('compressor');
         $this->export_dir_path = '';
         $this->compress_method = Compressor::ZIP;
         $this->compress_methods = array(Compressor::ZIP, Compressor::RAR, Compressor::TAR_GZ, Compressor::TAR_BZ);
@@ -24,7 +25,6 @@ class Exporter extends CI_Model
     public function compress($compress_method)
     {
         $this->set_compress_method($compress_method);
-        $this->load->library('compressor');
 
         switch($compress_method)
         {

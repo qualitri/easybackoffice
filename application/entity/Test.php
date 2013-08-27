@@ -3,27 +3,37 @@
 class Test
 {
 	var $id_test;
-	var $hola;
-	var $chau;
+	var $name;
+	var $last;
 
-	public function setHola($hola)
+	public function setIdTest($id_test)
 	{
-		$this->hola = $hola;
+		$this->id_test = $id_test;
 	}
 
-	public function getHola()
+	public function getIdTest()
 	{
-		return $this->hola;
+		return $this->id_test;
 	}
 
-	public function setChau($chau)
+	public function setName($name)
 	{
-		$this->chau = $chau;
+		$this->name = $name;
 	}
 
-	public function getChau()
+	public function getName()
 	{
-		return $this->chau;
+		return $this->name;
+	}
+
+	public function setLast($last)
+	{
+		$this->last = $last;
+	}
+
+	public function getLast()
+	{
+		return $this->last;
 	}
 
 }

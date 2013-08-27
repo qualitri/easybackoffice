@@ -18,8 +18,8 @@ class Test_admin extends Backoffice_Controller
 
         $test = $this->model->create_instance(
              $id_test
-            ,$this->input->post('hola')
-		,$this->input->post('chau')
+            ,$this->input->post('name')
+		,$this->input->post('last')
         );
 
         return $test;
@@ -42,8 +42,8 @@ class Test_admin extends Backoffice_Controller
 
     function _get_rules(){
         $rules_config = array(
-            array('field' => 'hola', 'label' => 'hola', 'rules' => 'trim|xss_clean')
-		,array('field' => 'chau', 'label' => 'chau', 'rules' => 'trim|xss_clean')
+            array('field' => 'name', 'label' => 'name', 'rules' => 'trim|xss_clean')
+		,array('field' => 'last', 'label' => 'last', 'rules' => 'trim|xss_clean')
         );
 
         return $rules_config;

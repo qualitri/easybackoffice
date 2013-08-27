@@ -23,9 +23,9 @@ class Export extends Base_Controller {
             //YOU ARE NOT
             $this->export_download();
         }
-        $this->load->model('formatter');
-        $format = $this->formatter->get_format();
-        print_r($format);
+        //$this->load->model('formatter');
+        //$format = $this->formatter->get_format();
+        //print_r($format);
 	}
 
     function export_local()

@@ -204,7 +204,7 @@ class CI_Exporter extends Exporter
         $output = str_replace($from, $to, $template);
 
         //Controller File Creation
-        file_put_contents($this->get_app_path().'/controllers/admin'.$entity_name_lower.'_admin.php', $output);
+        file_put_contents($this->get_app_path().'/controllers/admin/'.$entity_name_lower.'_admin.php', $output);
 
     }
 

@@ -11,7 +11,7 @@ class Base_Controller extends CI_Controller
         parent::__construct();
         self::$CI = &get_instance();
 
-        $this->load->library(array('database','form_validation'));
+        $this->load->library(array(/*'database',*/'form_validation'));
 
         $this->load->helper('url');
         $this->load->helper('form');
