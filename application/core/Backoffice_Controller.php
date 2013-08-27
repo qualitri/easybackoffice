@@ -107,6 +107,7 @@ class Backoffice_Controller extends Base_Controller
 	/* default list */
 	function list_all()
 	{
+        $this->setContext(func_get_args());
 		$this->data['list'] = $this->model->list_entries($this->instances);
         $this->load->view('admin/common/header_view', $this->data);
         $this->load->view('admin/'.$this->view_list, $this->data);

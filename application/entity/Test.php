@@ -3,8 +3,8 @@
 class Test
 {
 	var $id_test;
-	var $name;
-	var $last;
+	var $nombre;
+	var $apellido;
 
 	public function setIdTest($id_test)
 	{
@@ -16,24 +16,24 @@ class Test
 		return $this->id_test;
 	}
 
-	public function setName($name)
+	public function setNombre($nombre)
 	{
-		$this->name = $name;
+		$this->nombre = $nombre;
 	}
 
-	public function getName()
+	public function getNombre()
 	{
-		return $this->name;
+		return $this->nombre;
 	}
 
-	public function setLast($last)
+	public function setApellido($apellido)
 	{
-		$this->last = $last;
+		$this->apellido = $apellido;
 	}
 
-	public function getLast()
+	public function getApellido()
 	{
-		return $this->last;
+		return $this->apellido;
 	}
 
 }

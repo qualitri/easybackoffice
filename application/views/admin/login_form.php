@@ -1,4 +1,4 @@
-<form class="form-horizontal" action="<?php echo $base_url.'admin/auth_admin/login/process' ?>" method="post">
+<form class="form-horizontal" action="<?php echo $base_url.'admin/auth/login/process' ?>" method="post">
     <legend>Login Form</legend>
     <div class="control-group <?php if(form_error('password')) echo 'error' ?>">
         <label class="control-label" for="inputName">Password</label>

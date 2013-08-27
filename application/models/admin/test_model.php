@@ -14,14 +14,14 @@ class Test_Model extends Base_Model
 
     function create_instance(
          $id = null
-        ,$name = null
-		,$last = null
+        ,$nombre = null
+		,$apellido = null
     ){
         $test = new Test();
-        $id = $id != null ? $id : $this->generate_uniqid('tst');
+        $id = $id != null ? $id : $this->generate_uniqid('wdw');
         $test->setIdTest($id);
-        $test->setName($name);
-		$test->setLast($last);
+        $test->setNombre($nombre);
+		$test->setApellido($apellido);
         return $test;
     }
 

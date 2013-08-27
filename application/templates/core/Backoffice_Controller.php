@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /* Form Class for Admin */
-class Backoffice_Controller extends Base_Controller_exp
+class Backoffice_Controller extends Base_Controller
 {
 	protected $view_list;
     protected $view_form;
@@ -16,7 +16,6 @@ class Backoffice_Controller extends Base_Controller_exp
             $this->session->set_flashdata('admin_url', base_url($_SERVER['REQUEST_URI']));
         }
 
-        $this->load->library('images');
         $this->instances = array();
 	}
 
