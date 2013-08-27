@@ -38,6 +38,10 @@
                     <option value="select">Select/drop-down list</option>
                     <option value="checkbox_group">Checkbox Group</option>
                     <option value="radio">Radio buttons</option>
+                    <option value="date">Date</option>
+                    <option value="address">Address</option>
+                    <option value="image_input">Image input</option>
+                    <option value="coordinates">Coordinates</option>
 
                     <?php endif ?>
 

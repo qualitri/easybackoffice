@@ -211,82 +211,113 @@ class CI_Exporter extends Exporter
     private function create_views($fields, $entity)
     {
         $this->load->library('string_builder');
-
-        $this->string_builder->flush_string();
+        $entity_fields = '';
+        $empty_fields = '';
         
-        $this->string_builder->append("<form class='form-horizontal' method='post' action='' id='".$entity['name']."'> \n");
-        $this->string_builder->append("\t<legend> Form ".$entity['name']."</legend>\n");
-        $this->string_builder->append("\t<?php if(isset(\$entity)): ?>\n");
         foreach ($fields as $key => $field) {
             
+            $field_name = $field['name'];
+            $field_id = $field['id'];
+            $field_type = $field['type'];
+            $field_name_upper = joined_ucwords($field['name']);
+
             if ($field['type'] == 'password' || $field['type'] == 'checkbox' || $field['type'] == 'text') {
 
-                $this->string_builder->append("\t<div class='control-group'> \n");
+                /*$this->string_builder->append("\t<div class='control-group'> \n");
                 $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                 $this->string_builder->append("\t\t<div class='controls'> \n");
                 $this->string_builder->append("\t\t\t<input type='".$field['type']."' value='<?php echo \$entity->get".joined_ucwords($field['name'])."(); ?>' placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."'>\n");
                 $this->string_builder->append("\t\t</div> \n");
-                $this->string_builder->append("\t</div> \n");
-        }
+                $this->string_builder->append("\t</div> \n");*/
+
+                $this->string_builder->flush_string();
+
+                $template_text = file_get_contents(APPPATH.'templates/view/template_text.tpl');
+                
+                $from = array('{#field_name#}', '{#field_name_upper#}', '{#field_id#}');
+                $to = array($field_name, $field_name_upper, $field_id);
+
+                $entity_fields .= str_replace($from, $to, $template_text);
+            }
             else
             {    
                 switch ($field['type']) {
                     case "radio":
-                        $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
-                        $this->string_builder->append("\t\t<div class='controls'> \n");
+
+                    $this->string_builder->flush_string();
+
                         foreach ($field['options'] as $key => $value) {
                             $this->string_builder->append("\t\t\t<label class='".$field['type']."'>\n");
-                            $this->string_builder->append("\t\t\t\t<input type='".$field['type']."' placeholder='Insert Data' <?php foreach (\$field['options'] as \$key => \$value) { if(\$entity[\$name]->get".joined_ucwords($field['name'])."() == '".$key."') echo 'checked'} ?> value='".$key."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."'>\n");
+                            $this->string_builder->append("\t\t\t\t<input type='".$field['type']."' placeholder='Insert Data' <?php if(in_array('".$key."', explode(',', $entity->get".joined_ucwords($field['name'])."())) echo 'checked';} ?> value='".$key."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."'>\n");
                             $this->string_builder->append("\t\t\t\t".$value."\n");
-                            $this->string_builder->append("\t\t</label>\n");
+                            $this->string_builder->append("\t\t</label>\n"); 
                         }
-                        $this->string_builder->append("\t\t</div> \n");
-                        $this->string_builder->append("\t</div> \n");
+                        $template_radio = file_get_contents(APPPATH.'templates/view/template_radio.tpl');
+
+                        $radio_options = $this->string_builder->get_string();
+                        
+                        $from = array('{#field_name#}', '{#radio_options#}');
+                        $to = array($field_name, $radio_options);
+
+                        $entity_fields .= str_replace($from, $to, $template_radio);
                         break;
                     case "checkbox_group":
-                        $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
-                        $this->string_builder->append("\t\t<div class='controls'> \n");
+
+                    $this->string_builder->flush_string();
+
                         foreach ($field['options'] as $key => $value) {
                             $this->string_builder->append("\t\t\t<label class='".$field['type']."'>\n");
-                            $this->string_builder->append("\t\t\t\t<input type='checkbox' placeholder='Insert Data' <?php foreach (\$field['options'] as \$key => \$value) { if(\$entity[\$name]->get".joined_ucwords($field['name'])."() == '".$key."') echo 'checked'} ?> value='".$value."' class='input-xlarge' name='".$field['name']."[]"."' id='".$field['id']."'>\n");
+                            $this->string_builder->append("\t\t\t\t<input type='checkbox' placeholder='Insert Data' <?php if(in_array('".$key."', explode(',', $entity->get".joined_ucwords($field['name'])."())) echo 'checked';} ?> value='".$value."' class='input-xlarge' name='".$field['name']."[]"."' id='".$field['id']."'>\n");
                             $this->string_builder->append("\t\t\t\t".$value."\n");
                             $this->string_builder->append("\t\t\t</label>\n");
                         }
-                        $this->string_builder->append("\t\t</div> \n");
-                        $this->string_builder->append("\t</div> \n");
+                        $template_checkboxgroup = file_get_contents(APPPATH.'templates/view/template_checkboxgroup.tpl');
+
+                        $checkbox_options = $this->string_builder->get_string();
+                        
+                        $from = array('{#field_name#}', '{#checkbox_options#}');
+                        $to = array($field_name, $checkbox_options);
+
+                        $entity_fields .= str_replace($from, $to, $template_checkboxgroup);
                         break;
-                    case "textarea":
-                        $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
-                        $this->string_builder->append("\t\t<div class='controls'> \n");
-                        $this->string_builder->append("\t\t\t<textarea placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."'>\n");                        
+                    case "textarea": 
+
+                    $this->string_builder->flush_string();
+
+                        /*$this->string_builder->append("\t\t\t<textarea placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."'>\n");                        
                         $this->string_builder->append("\t\t\t<?php echo \$entity->get".joined_ucwords($field['name'])."() ?>\n");
-                        $this->string_builder->append("\t\t\t</textarea> \n");
-                        $this->string_builder->append("\t\t</div> \n");
-                        $this->string_builder->append("\t</div> \n");
+                        $this->string_builder->append("\t\t\t</textarea> \n");*/
+
+                        $template_textarea = file_get_contents(APPPATH.'templates/view/template_textarea.tpl');
+                        
+                        $from = array('{#field_name#}', '{#field_id#}');
+                        $to = array($field_name, $field_id);
+
+                        $entity_fields .= str_replace($from, $to, $template_textarea);
                         break;
                     case "select":
-                        $this->string_builder->append("\t<div class='control-group'> \n");
-                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
-                        $this->string_builder->append("\t\t<div class='controls'> \n");
-                        $this->string_builder->append("\t\t\t<select class='input-xlarge' name='".$field['name']."' id='".$field['id']."'>\n");
+
+                    $this->string_builder->flush_string();
+
                         foreach ($field['options'] as $key => $value) {
-                            $this->string_builder->append("\t\t\t\t<?php foreach(\$field['options'] as \$key => \$value): ?>\n");
                             $this->string_builder->append("\t\t\t\t<option value='".$key."'>\n");
                             $this->string_builder->append("\t\t\t\t\t<?php if(\$entity->get".($field['name'])."() == \$entity->get".($field['key'])."()) echo 'selected' ?>");
-                            $this->string_builder->append("\t\t\t\t\t".$value."</option>");
-                            $this->string_builder->append("\t\t\t\t<?php endforeach; ?>");
+                            $this->string_builder->append(.$value."</option>");
                         }
-                        $this->string_builder->append("\t\t\t</select> \n");
-                        $this->string_builder->append("\t\t</div> \n");
-                        $this->string_builder->append("\t</div> \n");
+
+                        $template_checkboxgroup = file_get_contents(APPPATH.'templates/view/template_select.tpl');
+
+                        $select_options = $this->string_builder->get_string();
+                        
+                        $from = array('{#field_name#}', '{#field_id#}', '{#select_options#}');
+                        $to = array($field_name, $field_id, $select_options);
+
+                        $entity_fields .= str_replace($from, $to, $template_select);
                         break;
                 }
             }         
         }
-        $this->string_builder->append("\t<?php else: ?>");
+        $this->string_builder->append("\t<?php else: ?>\n");
         foreach ($fields as $key => $field) {
             
             if ($field['type'] == 'password' || $field['type'] == 'checkbox' || $field['type'] == 'text') {
