@@ -362,7 +362,7 @@ class CI_Exporter extends Exporter
         $this->string_builder->append("<button type='submit' class='btn btn-primary'>\n");
         $this->string_builder->append("<?php echo \$form_action == 'save' ? \$this->lang->line('create') : \$this->lang->line('update') ?>\n");
         $this->string_builder->append("</button>\n");
-        $this->string_builder->append("<a class='btn' href='<?php echo \$base_url.'' ?>'><?php echo \$this->lang->line('cancel') ?></a>\n");
+        $this->string_builder->append("<a class='btn' href='<?php echo \$base_url.'' ?>'>cancel</a>\n");
         $this->string_builder->append("</div>\n");
         $this->string_builder->append("</div>\n");
 
