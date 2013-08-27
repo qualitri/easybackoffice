@@ -220,7 +220,7 @@ class CI_Exporter extends Exporter
                 $this->string_builder->append("\t<div class='control-group'> \n");
                 $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                 $this->string_builder->append("\t\t<div class='controls'> \n");
-                $this->string_builder->append("\t\t\t<input type='".$field['type']."' value='<?php echo set_value('".$entity['name']."') ?>' placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                $this->string_builder->append("\t\t\t<input type='".$field['type']."' value='<?php echo \$entity->get".joined_ucwords($field['name'])."(); ?>' placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
                 $this->string_builder->append("\t\t</div> \n");
                 $this->string_builder->append("\t</div> \n");
         }
@@ -233,7 +233,7 @@ class CI_Exporter extends Exporter
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         foreach ($field['options'] as $key => $value) {
                             $this->string_builder->append("\t\t\t<label class='".$field['type']."'>\n");
-                            $this->string_builder->append("\t\t\t\t<input type='".$field['type']."' placeholder='Insert Data' value='".$key."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                            $this->string_builder->append("\t\t\t\t<input type='".$field['type']."' placeholder='Insert Data' <?php foreach (\$field['options'] as \$key => \$value) { if(\$entity[\$name]->get".joined_ucwords($field['name'])."() == '".$key."') echo 'checked'} ?> value='".$key."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
                             $this->string_builder->append("\t\t\t\t".$value."\n");
                             $this->string_builder->append("\t\t</label>\n");
                         }
@@ -246,7 +246,7 @@ class CI_Exporter extends Exporter
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         foreach ($field['options'] as $key => $value) {
                             $this->string_builder->append("\t\t\t<label class='".$field['type']."'>\n");
-                            $this->string_builder->append("\t\t\t\t<input type='checkbox' placeholder='Insert Data' value='".$value."' class='input-xlarge' name='".$field['name']."[]"."' id='".$field['id']."_".$field['name']."'>\n");
+                            $this->string_builder->append("\t\t\t\t<input type='checkbox' placeholder='Insert Data' <?php foreach (\$field['options'] as \$key => \$value) { if(\$entity[\$name]->get".joined_ucwords($field['name'])."() == '".$key."') echo 'checked'} ?> value='".$value."' class='input-xlarge' name='".$field['name']."[]"."' id='".$field['id']."_".$field['name']."'>\n");
                             $this->string_builder->append("\t\t\t\t".$value."\n");
                             $this->string_builder->append("\t\t\t</label>\n");
                         }
@@ -258,6 +258,7 @@ class CI_Exporter extends Exporter
                         $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         $this->string_builder->append("\t\t\t<textarea placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");                        
+                        $this->string_builder->append("\t\t\t<?php echo \$entity->get".joined_ucwords($field['name'])."() ?>\n");
                         $this->string_builder->append("\t\t\t</textarea> \n");
                         $this->string_builder->append("\t\t</div> \n");
                         $this->string_builder->append("\t</div> \n");
@@ -268,8 +269,11 @@ class CI_Exporter extends Exporter
                         $this->string_builder->append("\t\t<div class='controls'> \n");
                         $this->string_builder->append("\t\t\t<select class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
                         foreach ($field['options'] as $key => $value) {
-
-                            $this->string_builder->append("\t\t\t\t<option value='".$key."'>".$value."</option> \n");
+                            $this->string_builder->append("\t\t\t\t<?php foreach(\$field['options'] as \$key => \$value): ?>\n");
+                            $this->string_builder->append("\t\t\t\t<option value='".$key."'>\n");
+                            $this->string_builder->append("\t\t\t\t\t<?php if(\$entity->get".($field['name'])."() == \$entity->get".($field['key'])."()) echo 'selected' ?>");
+                            $this->string_builder->append("\t\t\t\t\t".$value."</option>");
+                            $this->string_builder->append("\t\t\t\t<?php endforeach; ?>");
                         }
                         $this->string_builder->append("\t\t\t</select> \n");
                         $this->string_builder->append("\t\t</div> \n");
@@ -278,6 +282,83 @@ class CI_Exporter extends Exporter
                 }
             }         
         }
+        $this->string_builder->append("\t<?php else: ?>");
+        foreach ($fields as $key => $field) {
+            
+            if ($field['type'] == 'password' || $field['type'] == 'checkbox' || $field['type'] == 'text') {
+
+                $this->string_builder->append("\t<div class='control-group <?php if(form_error('topic')) echo 'error' ?>'> \n");
+                $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
+                $this->string_builder->append("\t\t<div class='controls'> \n");
+                $this->string_builder->append("\t\t\t<input type='".$field['type']."' value='<?php echo \$entity->get".joined_ucwords($field['name'])."(); ?>' placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                $this->string_builder->append("\t\t</div> \n");
+                $this->string_builder->append("\t</div> \n");
+        }
+            else
+            {    
+                switch ($field['type']) {
+                    case "radio":
+                        $this->string_builder->append("\t<div class='control-group'> \n");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
+                        $this->string_builder->append("\t\t<div class='controls'> \n");
+                        foreach ($field['options'] as $key => $value) {
+                            $this->string_builder->append("\t\t\t<label class='".$field['type']."'>\n");
+                            $this->string_builder->append("\t\t\t\t<input type='".$field['type']."' placeholder='Insert Data' <?php foreach (\$field['options'] as \$key => \$value) { if(\$entity[\$name]->get".joined_ucwords($field['name'])."() == '".$key."') echo 'checked'} ?> value='".$key."' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                            $this->string_builder->append("\t\t\t\t".$value."\n");
+                            $this->string_builder->append("\t\t</label>\n");
+                        }
+                        $this->string_builder->append("\t\t</div> \n");
+                        $this->string_builder->append("\t</div> \n");
+                        break;
+                    case "checkbox_group":
+                        $this->string_builder->append("\t<div class='control-group'> \n");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
+                        $this->string_builder->append("\t\t<div class='controls'> \n");
+                        foreach ($field['options'] as $key => $value) {
+                            $this->string_builder->append("\t\t\t<label class='".$field['type']."'>\n");
+                            $this->string_builder->append("\t\t\t\t<input type='checkbox' placeholder='Insert Data' <?php foreach (\$field['options'] as \$key => \$value) { if(\$entity[\$name]->get".joined_ucwords($field['name'])."() == '".$key."') echo 'checked'} ?> value='".$value."' class='input-xlarge' name='".$field['name']."[]"."' id='".$field['id']."_".$field['name']."'>\n");
+                            $this->string_builder->append("\t\t\t\t".$value."\n");
+                            $this->string_builder->append("\t\t\t</label>\n");
+                        }
+                        $this->string_builder->append("\t\t</div> \n");
+                        $this->string_builder->append("\t</div> \n");
+                        break;
+                    case "textarea":
+                        $this->string_builder->append("\t<div class='control-group'> \n");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
+                        $this->string_builder->append("\t\t<div class='controls'> \n");
+                        $this->string_builder->append("\t\t\t<textarea placeholder='Insert Data' class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");                        
+                        $this->string_builder->append("\t\t\t<?php echo \$entity->get".joined_ucwords($field['name'])."() ?>\n");
+                        $this->string_builder->append("\t\t\t</textarea> \n");
+                        $this->string_builder->append("\t\t</div> \n");
+                        $this->string_builder->append("\t</div> \n");
+                        break;
+                    case "select":
+                        $this->string_builder->append("\t<div class='control-group'> \n");
+                        $this->string_builder->append("\t\t<label class='control-label'>".$field['name']."</label>\n");
+                        $this->string_builder->append("\t\t<div class='controls'> \n");
+                        $this->string_builder->append("\t\t\t<select class='input-xlarge' name='".$field['name']."' id='".$field['id']."_".$field['name']."'>\n");
+                        foreach ($field['options'] as $key => $value) {
+                            $this->string_builder->append("\t\t\t\t<?php foreach(\$field['options'] as \$key => \$value): ?>\n");
+                            $this->string_builder->append("\t\t\t\t<option value='".$key."'>\n");
+                            $this->string_builder->append("\t\t\t\t\t<?php if(\$entity->get".($field['name'])."() == \$entity->get".($field['key'])."()) echo 'selected' ?>");
+                            $this->string_builder->append("\t\t\t\t\t".$value."</option>");
+                            $this->string_builder->append("\t\t\t\t<?php endforeach; ?>");
+                        }
+                        $this->string_builder->append("\t\t\t</select> \n");
+                        $this->string_builder->append("\t\t</div> \n");
+                        $this->string_builder->append("\t</div> \n");
+                        break;
+                }
+            }         
+        }
+
+
+
+
+
+
+
         $this->string_builder->append("\t<div class='control-group'>\n");
         $this->string_builder->append("\t\t<div class='controls'>\n");
         $this->string_builder->append("\t\t\t<button type='submit' class='btn btn-primary'>\n");
